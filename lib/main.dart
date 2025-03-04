@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
+import 'screens/login_page.dart';
 
 void main(){
-  runApp(izukbs());
+  runApp(Izukbs());
 }
-class izukbs extends StatelessWidget {
+class Izukbs extends StatelessWidget {
+  const Izukbs({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,7 +15,7 @@ class izukbs extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue, // Tema rengi
       ),
-      home: login_page(), // İlk açılacak sayfa
+      home: Login_page(), // İlk açılacak sayfa
     );
   }
 }
