@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:izukbs/screens/homepage.dart';
 
-class login_page extends StatefulWidget {
-  const login_page({super.key});
+class Login_page extends StatefulWidget {
+  const Login_page({super.key});
 
   @override
-  State<login_page> createState() => _login_pageState();
+  State<Login_page> createState() => _Login_pageState();
 }
 
-class _login_pageState extends State<login_page> {
+class _Login_pageState extends State<Login_page> {
 
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
@@ -25,7 +26,7 @@ class _login_pageState extends State<login_page> {
               width: 175,
               height: 175,
               decoration: BoxDecoration(
-                color: Color(0xFF8B2231).withOpacity(0.7),
+                color: Color(0xFF8B2231),
                 shape: BoxShape.circle,
               ),
             ),
@@ -37,7 +38,7 @@ class _login_pageState extends State<login_page> {
               width: 175,
               height: 175,
               decoration: BoxDecoration(
-                color: Color(0xFF8B2231).withOpacity(0.7),
+                color: Color(0xFF8B2231),
                 shape: BoxShape.circle,
               ),
             ),
@@ -95,8 +96,11 @@ class _login_pageState extends State<login_page> {
           color: Color(0xFF8B2231),
         )),
         SizedBox(height: 50,),
-        ElevatedButton(onPressed: (){
-          print("giris yapiliyor");
+        ElevatedButton(onPressed: (){ Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+
         },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF8B2231),

@@ -1,0 +1,2 @@
+/Users/esranuryigit/Desktop/izu-mobil/android/app/.cxx/Debug/2h4b414i/x86/CMakeFiles/edit_cache.dir
+/Users/esranuryigit/Desktop/izu-mobil/android/app/.cxx/Debug/2h4b414i/x86/CMakeFiles/rebuild_cache.dir
