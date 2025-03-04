@@ -1,6 +1,6 @@
 # izukbs
 
-A new Flutter project.
+izü kampüs bilgi sisteminin mobil versiyonu.
 
 ## Getting Started
 
