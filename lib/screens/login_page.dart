@@ -26,7 +26,7 @@ class _Login_pageState extends State<Login_page> {
               width: 175,
               height: 175,
               decoration: BoxDecoration(
-                color: Color(0xFF8B2231),
+                color: Color(0xFF8B2231).withOpacity(0.7),
                 shape: BoxShape.circle,
               ),
             ),
@@ -38,7 +38,7 @@ class _Login_pageState extends State<Login_page> {
               width: 175,
               height: 175,
               decoration: BoxDecoration(
-                color: Color(0xFF8B2231),
+                color: Color(0xFF8B2231).withOpacity(0.7),
                 shape: BoxShape.circle,
               ),
             ),
@@ -100,7 +100,6 @@ class _Login_pageState extends State<Login_page> {
           context,
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
-
         },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF8B2231),
