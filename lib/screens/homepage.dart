@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(HomePage());
-}
+import 'package:izukbs/screens/ogrencibilgileri.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -81,7 +78,30 @@ class StudentProfileScreen extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   crossAxisCount: 3,
                   children: [
-                    menuButton(Icons.person, "Öğrenci Bilgileri"),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ogrencibilgileri()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
+                        elevation: 4,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.person, color: Colors.black, size: 30),
+                          SizedBox(height: 8),
+                          Text("Öğrenci Bilgileri", textAlign: TextAlign.center, style: TextStyle(color: Colors.black)),
+                        ],
+                      ),
+                    ),
                     menuButton(Icons.calendar_today, "Ders Programı"),
                     menuButton(Icons.receipt, "Transkript"),
                     menuButton(Icons.bar_chart, "Devamsızlık Durumu"),
