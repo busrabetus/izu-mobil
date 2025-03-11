@@ -266,48 +266,71 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildCard(int index) {
+    // Index'e göre görseller ve yazılar
+    List<Map<String, String>> cardData = [
+      {
+        'image': 'assets/images/hosgeldin_1.jpg',
+        'text': 'Hoş Geldin!',
+      },
+      {
+        'image': 'assets/images/çanakkalekongresi.png',
+        'text': 'Ders Programı',
+      },
+      {
+        'image': 'assets/images/kongre.jpg',
+        'text': 'Etkinlikler',
+      },
+      {
+        'image': 'assets/images/ii-uluslararasi-sağlik-bilimleri-kongresi_.png',
+        'text': 'Güncel Haberler',
+      },
+      {
+        'image': 'assets/images/tarihihisset.jpg',
+        'text': 'Duyurular',
+      },
+    ];
+
+    // Eğer index sınırı aşarsa boş widget dön
+    if (index < 0 || index >= cardData.length) return SizedBox.shrink();
+
     return Container(
       width: 200,
       height: 300,
       margin: EdgeInsets.only(right: 10, top: 5),
       decoration: BoxDecoration(
-        color: Colors.blueAccent,
+        color: Colors.grey[400],
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Center(
-        child: index == 0
-            ? Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image.asset(
-              'assets/images/hosgeldin_1.jpg', // Görselin yolu
-              width: 200,
-              height: 60,
-              fit: BoxFit.contain,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 8, right: 8, left: 8,),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(7),
+              child: Image.asset(
+                cardData[index]['image']!,
+                width: 200,
+                height: 60,
+                fit: BoxFit.contain,
               ),
             ),
           ),
-            SizedBox(height: 10),
-            // Yazı ekleme
-            Text(
-              'Özel Yazı ve Görsel',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+          SizedBox(height: 20),
+          Text(
+            cardData[index]['text']!,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        )
-            : Container(),
+          ),
+        ],
       ),
     );
   }
+
 
   Widget menuButton(IconData icon, String title, BuildContext context, Widget? page) {
     return Expanded(
