@@ -130,22 +130,97 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 310,
+            top: 280,
             left: 20,
             right: 20,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 menuButton(Icons.person, "Öğrenci Bilgileri", context, ogrencibilgileri()),
+                SizedBox(width: 8),
                 menuButton(Icons.calendar_today, "Ders Programı", context, null),
+                SizedBox(width: 8),
                 menuButton(Icons.assignment, "Sınav Sonuçları", context, null),
               ],
             ),
           ),
+          Positioned(
+            top: 380,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                menuButton(Icons.note, "Transkript Belgesi", context, null),
+                SizedBox(width: 8),
+                menuButton(Icons.auto_graph, "Devam Durumu", context, null),
+                SizedBox(width: 8),
+                menuButton(Icons.assignment, "Sınav Tarihleri", context, null),
+              ],
+            ),
+          ),
+          Positioned(
+            top: 480,
+            left: 20,
+            right: 20,
+            child: SizedBox(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    children: List.generate(5, (index) => _buildCard(index))
+                ),
+              )
+            )
+          )
         ],
       ),
     );
   }
+
+  Widget _buildCard(int index) {
+    return Container(
+      width: 200,
+      height: 300,
+      margin: EdgeInsets.only(right: 10, top: 5),
+      decoration: BoxDecoration(
+        color: Colors.blueAccent,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: index == 0
+            ? Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 8),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.asset(
+              'assets/images/hosgeldin_1.jpg', // Görselin yolu
+              width: 200,
+              height: 60,
+              fit: BoxFit.contain,
+              ),
+            ),
+          ),
+            SizedBox(height: 10),
+            // Yazı ekleme
+            Text(
+              'Özel Yazı ve Görsel',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        )
+            : Container(),
+      ),
+    );
+  }
+
   Widget menuButton(IconData icon, String title, BuildContext context, Widget? page) {
     return Expanded(
       child: ElevatedButton(
@@ -178,3 +253,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
