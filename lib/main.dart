@@ -10,12 +10,12 @@ class Izukbs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // Debug yazısını kaldırır
+      debugShowCheckedModeBanner: false,
       title: 'Material App',
       theme: ThemeData(
-        primarySwatch: Colors.blue, // Tema rengi
+        primarySwatch: Colors.blue,
       ),
-      home: Login_page(), // İlk açılacak sayfa
+      home: Login_page(),
     );
   }
 }
