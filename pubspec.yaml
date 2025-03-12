@@ -59,14 +59,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  - assets/images/izulogo.png
-  - assets/images/Ekran Resmi 2025-03-04 21.03.00.png
-  - assets/images/Ekran Resmi 2025-03-04 20.59.57.png
-  - assets/images/hosgeldin_1.jpg
-  - assets/images/tarihihisset.jpg
-  - assets/images/çanakkalekongresi.png
-  - assets/images/ii-uluslararasi-sağlik-bilimleri-kongresi_.png
-  - assets/images/kongre.jpg
+    - assets/images/izulogo.png
+    - assets/images/Ekran Resmi 2025-03-04 21.03.00.png
+    - assets/images/Ekran Resmi 2025-03-04 20.59.57.png
+    - assets/images/hosgeldin_1.jpg
+    - assets/images/tarihihisset.jpg
+    - assets/images/çanakkalekongresi.png
+    - assets/images/ii-uluslararasi-sağlik-bilimleri-kongresi_.png
+    - assets/images/kongre.jpg
+    - assets/images/circles.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

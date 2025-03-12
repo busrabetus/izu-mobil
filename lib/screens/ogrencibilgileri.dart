@@ -149,7 +149,19 @@ class _ogrencibilgileriState extends State<ogrencibilgileri> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
+
+      body: Stack(
+    children: [
+    Align(
+    alignment: Alignment.center,
+      child: Image.asset(
+        'assets/images/circles.png',
+        width: 400,
+        height: 400,
+        fit: BoxFit.cover,
+      ),
+    ),
+    SingleChildScrollView(
       child :Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -515,7 +527,8 @@ class _ogrencibilgileriState extends State<ogrencibilgileri> {
         ],
       ),
     ),
-
+  ]
+      )
     );
   }
 }
