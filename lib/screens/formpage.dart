@@ -146,7 +146,17 @@ class _formpageState extends State<formpage> {
             ],
           ),
         ),
-      body: SingleChildScrollView(
+      body: Stack(
+        children: [
+        Align(
+        alignment: Alignment.center,
+        child: Image.asset(
+          'assets/images/circles.png',
+          width: 400,
+          height: 400,
+          fit: BoxFit.cover,
+        ),
+      ), SingleChildScrollView(
         child:
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -715,6 +725,8 @@ class _formpageState extends State<formpage> {
 
           ],
         )
+      )
+        ]
       )
     );
   }
