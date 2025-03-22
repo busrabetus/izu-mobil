@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/screens/acildurumtelno.dart';
+import 'package:izukbs/screens/basvuruformlari.dart';
 import 'package:izukbs/screens/sinavsonuclari.dart';
 import 'package:izukbs/screens/sinavtakvimi.dart';
 import 'package:izukbs/screens/transkript.dart';
 import 'package:izukbs/screens/dersmateryalleri.dart';
 import 'package:izukbs/screens/dersprogrami.dart';
 import 'package:izukbs/screens/devamsizlikdurumu.dart';
-import 'package:izukbs/screens/formpage.dart';
 import 'package:izukbs/screens/homepage.dart';
 import 'package:izukbs/screens/ogrencibilgileri.dart';
 
@@ -133,7 +133,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => formpage()),
+                MaterialPageRoute(builder: (context) => basvuruformlari()),
               );
             },
           ),
