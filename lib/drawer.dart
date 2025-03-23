@@ -39,7 +39,7 @@ class _drawerState extends State<drawer> {
           ),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text('Anasayfa'),
+            title: Text('Ana Sayfa'),
             onTap: () {
               Navigator.push(
                 context,

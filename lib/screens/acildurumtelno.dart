@@ -53,9 +53,10 @@ class _acildurumtelnoState extends State<acildurumtelno> {
                       children: [
                         SizedBox(width: 7,),
                         Icon(Icons.phone),
+                        SizedBox(width: 5,),
                         Text(" Acil Durum Telefon Numarası Ekle",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
@@ -66,7 +67,7 @@ class _acildurumtelnoState extends State<acildurumtelno> {
                 SizedBox(height: 5),
                 Container(
                   width: 400,
-                  height: 300,
+                  height: 261,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
@@ -92,7 +93,7 @@ class _acildurumtelnoState extends State<acildurumtelno> {
                           children: [
                             Text(
                               "Yakınlık Derecesi: ",
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(width: 20,),
                             DropdownButton<String>(
@@ -112,67 +113,90 @@ class _acildurumtelnoState extends State<acildurumtelno> {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: nameController,
-                                decoration: InputDecoration(
-                                  labelText: 'Ad',
-                                  border: OutlineInputBorder(),
+                        SizedBox(
+                          height: 35, // Row'un yüksekliğini düşürdük
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: nameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Ad',
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 8), // Padding'i azalttık
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: TextField(
-                                controller: surnameController,
-                                decoration: InputDecoration(
-                                  labelText: 'Soyad',
-                                  border: OutlineInputBorder(),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: TextField(
+                                  controller: surnameController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Soyad',
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 8), // Padding'i azalttık
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 10),
-                            // Cinsiyet Dropdown
-                            DropdownButton<String>(
-                              value: selectedGender,
-                              hint: Text("Cinsiyet"),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedGender = newValue;
-                                });
-                              },
-                              items: ["Kadın", "Erkek"].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                          ],
+                              SizedBox(width: 10),
+                              DropdownButton<String>(
+                                value: selectedGender,
+                                hint: Text("Cinsiyet"),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedGender = newValue;
+                                  });
+                                },
+                                items: ["Kadın", "Erkek"].map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(height: 20),
                         Text("Acil durum kişisi cep telefon numarası",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 7),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: noController,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                decoration: InputDecoration(
-                                  labelText: '(___) ___ ____ ',
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
+                        SizedBox(
+                          height: 35, // Yüksekliği sınırlandır
+                          child: TextField(
+                            controller: noController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                            decoration: InputDecoration(
+                              labelText: '(___) ___ ____ ',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 12), // Daha kompakt hale getirdik
                             ),
-                          ],
+                          ),
                         ),
-                        SizedBox(height: 20),
+
+                        SizedBox(height: 15),
+                        Center(
+                        child: ElevatedButton(
+
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Acil durum kişisi kaydedildi"),
+                                duration: Duration(seconds: 2),
+                                behavior: SnackBarBehavior.floating, // Ekranda yukarıda durması için
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF8B2231).withOpacity(0.3),
+                            foregroundColor: Colors.white,
+                          ),
+                          child: Text("Kaydet"),
+                        )
+                        )
+
                       ],
                     ),
                   ),

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:izukbs/screens/basvuruformlari.dart';
+import 'package:izukbs/screens/dersprogrami.dart';
+import 'package:izukbs/screens/devamsizlikdurumu.dart';
 import 'package:izukbs/screens/ogrencibilgileri.dart';
 import 'package:izukbs/screens/sinavsonuclari.dart';
 import 'package:izukbs/screens/sinavtakvimi.dart';
 import 'package:izukbs/screens/transkript.dart';
 
-import 'acildurumtelno.dart';
-import 'dersmateryalleri.dart';
-import 'dersprogrami.dart';
-import 'devamsizlikdurumu.dart';
+
+import '../drawer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,130 +33,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF8B2231),
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text("Öğrenci Profili"),
+        title: Text("Ana Sayfa", style: TextStyle(color: Colors.white)),
         centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            SizedBox(
-              height: 130,
-              child: DrawerHeader(
-                decoration: BoxDecoration(color: Color(0xFF8B2231)),
-                child: Center(
-                  child: Text(
-                    'İstanbul Sabahattin Zaim Üniversitesi',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Anasayfa'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.phone),
-              title: Text('Acil Durum İletişim Telefonu'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => acildurumtelno()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Öğrenci Bilgileri'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ogrencibilgileri()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.calendar_today),
-              title: Text('Haftalık Ders Programı'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => dersprogrami()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.bar_chart),
-              title: Text('Devamsızlık Durumu'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => devamsizlikdurumu()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.book),
-              title: Text('Ders Materyalleri'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => dersmateryalleri()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.assignment),
-              title: Text('Sınav Sonuçları'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => sinavsonuclari()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.receipt),
-              title: Text('Transkript'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => transkript()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.event),
-              title: Text('Sınav Takvimi'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => sinavtakvimi()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.format_align_center),
-              title: Text('Başvuru Formları'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => basvuruformlari()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: drawer(),
       body: Stack(
         children: [
           Column(
@@ -181,16 +61,16 @@ class HomePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15)),
               elevation: 7,
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircleAvatar(
-                      radius: 30,
+                      radius: 50,
                       backgroundColor: Colors.grey[300],
-                      child: Icon(Icons.person, size: 40, color: Colors.grey),
+                      child: Icon(Icons.person, size: 50, color: Colors.grey),
                     ),
-                    SizedBox(height: 25),
+                    SizedBox(height: 5),
                     Text("Ayşe Yılmaz",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
@@ -226,9 +106,9 @@ class HomePage extends StatelessWidget {
               children: [
                 menuButton(Icons.person, "Öğrenci Bilgileri", context, ogrencibilgileri()),
                 SizedBox(width: 8),
-                menuButton(Icons.calendar_today, "Ders Programı", context, null),
+                menuButton(Icons.calendar_today, "Ders Programı", context, dersprogrami()),
                 SizedBox(width: 8),
-                menuButton(Icons.assignment, "Sınav Sonuçları", context, null),
+                menuButton(Icons.assignment, "Sınav Sonuçları", context, sinavsonuclari()),
               ],
             ),
           ),
@@ -239,11 +119,11 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                menuButton(Icons.note, "Transkript Belgesi", context, null),
+                menuButton(Icons.note, "Transkript Belgesi", context, transkript()),
                 SizedBox(width: 8),
-                menuButton(Icons.auto_graph, "Devam Durumu", context, null),
+                menuButton(Icons.auto_graph, "Devam Durumu", context, devamsizlikdurumu()),
                 SizedBox(width: 8),
-                menuButton(Icons.assignment, "Sınav Tarihleri", context, null),
+                menuButton(Icons.assignment, "Sınav Takvimi", context, sinavtakvimi()),
               ],
             ),
           ),
@@ -321,30 +201,46 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 10),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 4),
-            child: Column(
+            child: Stack(
               children: [
-                Text(
-                  shortText,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                // Opak Beyaz Katman
+                Container(
+                  height: 210,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3), // %70 opak beyaz
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                if (text.length > 50)
-                  TextButton(
-                    onPressed: () {
-                      _showFullTextDialog(context, text, imagePath);
-                    },
-                    child: Text(
-                      "Devamını Gör",
-                      style: TextStyle(color: Colors.blue, fontSize: 13),
+                // Metinlerin olduğu kısım
+                Column(
+                  children: [
+                    Text(
+                      shortText,
+                      style: TextStyle(
+                        color: Colors.black, // Daha okunaklı olması için siyah
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
+                    if (text.length > 50)
+                      TextButton(
+                        onPressed: () {
+                          _showFullTextDialog(context, text, imagePath);
+                        },
+                        child: Text(
+                          "Devamını Gör",
+                          style: TextStyle(color: Colors.blue, fontSize: 13),
+                        ),
+                      ),
+                  ],
+                ),
               ],
             ),
-          ),
+          )
+
         ],
       ),
     );
