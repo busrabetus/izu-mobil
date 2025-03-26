@@ -40,11 +40,11 @@ class _dersprogramiState extends State<dersprogrami> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(9.0),
             child: ListView(
               children: schedule.keys.map((day) {
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
+                  margin: EdgeInsets.symmetric(vertical: 5),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
@@ -61,12 +61,12 @@ class _dersprogramiState extends State<dersprogrami> {
                     title: Text(day, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     children: schedule[day]!.map((lesson) {
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(horizontal: 9.0),
                         child: Card(
-                          color: Color(0xFF8B2231).withOpacity(0.3),
-                          margin: EdgeInsets.symmetric(vertical: 14),
+                          color: Color(0xFFF6F6F6).withOpacity(0.6),
+                          margin: EdgeInsets.symmetric(vertical: 4),
                           child: ListTile(
-                            title: Text(lesson, style: TextStyle(fontSize: 16,color: Colors.white)),
+                            title: Text(lesson, style: TextStyle(fontSize: 16,color: Colors.black)),
                           ),
                         ),
                       );

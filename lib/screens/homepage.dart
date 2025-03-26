@@ -121,7 +121,7 @@ class HomePage extends StatelessWidget {
               children: [
                 menuButton(Icons.note, "Transkript Belgesi", context, transkript()),
                 SizedBox(width: 8),
-                menuButton(Icons.auto_graph, "Devam Durumu", context, devamsizlikdurumu()),
+                menuButton(Icons.auto_graph, "Devam Durumu", context, DevamsizlikDurumu()),
                 SizedBox(width: 8),
                 menuButton(Icons.assignment, "Sınav Takvimi", context, sinavtakvimi()),
               ],
