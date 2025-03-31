@@ -203,23 +203,22 @@ class HomePage extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 4),
             child: Stack(
               children: [
-                // Opak Beyaz Katman
                 Container(
                   height: 210,
                   width: double.infinity,
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3), // %70 opak beyaz
+                    color: Colors.white.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
-                // Metinlerin olduğu kısım
+
                 Column(
                   children: [
                     Text(
                       shortText,
                       style: TextStyle(
-                        color: Colors.black, // Daha okunaklı olması için siyah
+                        color: Colors.black,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
