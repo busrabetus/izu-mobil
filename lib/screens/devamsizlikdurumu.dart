@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
+import 'devamsizlikdetay.dart';
 
 class DevamsizlikDurumu extends StatefulWidget {
   const DevamsizlikDurumu({super.key});
@@ -97,7 +98,7 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DersDetaySayfasi(
+                                builder: (context) => Devamsizlikdetay(
                                   dersAdi: devamsizlikListesi[index]['ders'],
                                   detaylar: devamsizlikListesi[index]['detaylar'],
                                 ),
@@ -118,69 +119,3 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
   }
 }
 
-class DersDetaySayfasi extends StatelessWidget {
-  final String dersAdi;
-  final Map<String, int> detaylar;
-
-  const DersDetaySayfasi({
-    required this.dersAdi,
-    required this.detaylar,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF0F0F0),
-      appBar: AppBar(
-        title: Text(dersAdi),
-        backgroundColor: Color(0xFF8B2231),
-      ),
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Image.asset(
-              'assets/images/circles.png',
-              width: 400,
-              height: 400,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "$dersAdi Dersine Katılım Detayları",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: detaylar.length,
-                    itemBuilder: (context, index) {
-                      String tarih = detaylar.keys.elementAt(index);
-                      int saat = detaylar[tarih]!;
-                      return Card(
-                        elevation: 3,
-                        margin: EdgeInsets.symmetric(vertical: 8),
-                        child: ListTile(
-                          title: Text("Tarih: $tarih"),
-                          trailing: Text(
-                            "Ders Saati: $saat",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
