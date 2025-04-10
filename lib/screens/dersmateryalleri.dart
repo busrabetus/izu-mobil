@@ -1,46 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
 
-class dersmateryalleri extends StatefulWidget {
-  const dersmateryalleri({super.key});
+class DersMateryalleri extends StatefulWidget {
+  const DersMateryalleri({super.key});
 
   @override
-  State<dersmateryalleri> createState() => _dersmateryalleriState();
+  State<DersMateryalleri> createState() => _DersMateryalleriState();
 }
 
-class _dersmateryalleriState extends State<dersmateryalleri> {
+class _DersMateryalleriState extends State<DersMateryalleri> {
+  // Örnek ders listesi
+  final List<String> dersler = [
+    "Veri Yapıları",
+    "Algoritmalar",
+    "Veritabanı Sistemleri",
+    "İşletim Sistemleri"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor:  Color(0xFFF0F0F0),
+      backgroundColor: Color(0xFFF0F0F0),
       appBar: AppBar(
         backgroundColor: Color(0xFF8B2231),
-        title: Text("Ders Materyalleri", style: TextStyle(color: Colors.white)),
+        title: const Text("Ders Materyalleri", style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-      drawer: drawer(),
-        body: Stack(
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  'assets/images/circles.png',
-                  width: 400,
-                  height: 400,
-                  fit: BoxFit.cover,
-                ),
-              ),
+      drawer: const drawer(),
+      body: ListView.builder(
+        itemCount: dersler.length,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: ListTile(
+              title: Text(dersler[index]),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DersDetaySayfasi(dersAdi: dersler[index]),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
 
+class DersDetaySayfasi extends StatelessWidget {
+  final String dersAdi;
 
+  const DersDetaySayfasi({super.key, required this.dersAdi});
 
-              // SAYFA İCERİGİ BURADA OLACAK
-
-
-
-
-            ]
-        )
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(dersAdi),
+        backgroundColor: Color(0xFF8B2231),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: Center(
+        child: Text(
+          "Bu ders için henüz materyal bulunmamaktadır.",
+          style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }
