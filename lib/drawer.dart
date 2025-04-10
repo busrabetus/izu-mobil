@@ -93,7 +93,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => dersmateryalleri()),
+                MaterialPageRoute(builder: (context) => DersMateryalleri()),
               );
             },
           ),
