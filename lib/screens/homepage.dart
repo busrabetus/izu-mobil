@@ -113,7 +113,7 @@ class HomePage extends StatelessWidget {
               children: [
                 menuButton(Icons.person, "Öğrenci Bilgileri", context, ogrencibilgileri()),
                 SizedBox(width: 8),
-                menuButton(Icons.calendar_today, "Ders Programı", context, dersprogrami()),
+                menuButton(Icons.calendar_today, "Ders\n Programı", context, dersprogrami()),
                 SizedBox(width: 8),
                 menuButton(Icons.assignment, "Sınav Sonuçları", context, sinavsonuclari()),
               ],
@@ -128,9 +128,9 @@ class HomePage extends StatelessWidget {
               children: [
                 menuButton(Icons.note, "Transkript Belgesi", context, transkript()),
                 SizedBox(width: 8),
-                menuButton(Icons.auto_graph, "Devam Durumu", context, DevamsizlikDurumu()),
+                menuButton(Icons.auto_graph, "Devamsızlık Durumu", context, DevamsizlikDurumu()),
                 SizedBox(width: 8),
-                menuButton(Icons.assignment, "Sınav Takvimi", context, sinavtakvimi()),
+                menuButton(Icons.assignment, "Sınav\n Takvimi", context, sinavtakvimi()),
               ],
             ),
           ),
@@ -323,8 +323,8 @@ class HomePage extends StatelessWidget {
               title,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.black, fontSize: 10),
-              maxLines: 2,  // Tek satırda gösterir
-              minFontSize: 10,  // Minimum font boyutunu ayarla
+              maxLines: 2,
+              minFontSize: 10,
             ),
           ],
         ),
