@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
+import '../term_dropdownbutton.dart';
 
 class sinavsonuclari extends StatefulWidget {
   const sinavsonuclari({super.key});
@@ -11,7 +12,7 @@ class sinavsonuclari extends StatefulWidget {
 class _sinavsonuclariState extends State<sinavsonuclari> {
    late String selectedTerm;
 
-  final Map<String, List<Map<String, String>>> dummyResults = {
+  final Map<String, List<Map<String, String>>> sinavSonuclari = {
     "2023-2024 Bahar": [
       {"ders": "Algoritma Analizi", "vize": "70", "final": "50", "harf": "CC"},
       {"ders": "Web Tabanlı Programlama", "vize": "95","final": "100", "harf": "AA"},
@@ -33,7 +34,7 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
   @override
   void initState() {
     super.initState();
-    selectedTerm = dummyResults.keys.last;
+    selectedTerm = sinavSonuclari.keys.last;
   }
 
   @override
@@ -65,23 +66,17 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Dönem Seçiniz:",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  "Dönem Seçiniz",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                DropdownButton<String>(
-                  value: selectedTerm,
-                  items: dummyResults.keys.map((String term) {
-                    return DropdownMenuItem<String>(
-                      value: term,
-                      child: Text(term),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        selectedTerm = newValue;
-                      });
-                    }
+                SizedBox(height: 8),
+                TermDropdown(
+                  terms: sinavSonuclari.keys.toList(),
+                  selectedTerm: selectedTerm,
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedTerm = newValue;
+                    });
                   },
                 ),
                 SizedBox(height: 20),
@@ -91,9 +86,9 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: dummyResults[selectedTerm]?.length ?? 0,
+                    itemCount: sinavSonuclari[selectedTerm]?.length ?? 0,
                     itemBuilder: (context, index) {
-                      var result = dummyResults[selectedTerm]![index];
+                      var result = sinavSonuclari[selectedTerm]![index];
                       return Card(
                         child: ListTile(
                           title: Text(result["ders"]!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),

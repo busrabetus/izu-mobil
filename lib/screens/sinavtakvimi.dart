@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
+import 'package:izukbs/term_dropdownbutton.dart';
 
 class sinavtakvimi extends StatefulWidget {
   const sinavtakvimi({super.key});
@@ -11,7 +12,7 @@ class sinavtakvimi extends StatefulWidget {
 class _sinavtakvimiState extends State<sinavtakvimi> {
   late String selectedTerm;
 
-  final Map<String, List<Map<String, String>>> dummyResults = {
+  final Map<String, List<Map<String, String>>> sinavTakvimi = {
     "2023-2024 Bahar": [
       {"ders": "Algoritma Analizi", "sinavturu": "Vize", "tarih": "07.04.2025","saat": "11:30", "derslik": "	Eğitim Bilimleri - EGB01 - Molla Gürânî Konferans Salonu"},
       {"ders": "Web Tabanlı Programlama", "sinavturu": "Vize","tarih": "08.04.2025","saat": "13:30", "derslik": "Eğitim Bilimleri - EGC16 - Açık Kaynak ve Özgür Yazılım Laboratuvarı"},
@@ -33,7 +34,7 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
   @override
   void initState() {
     super.initState();
-    selectedTerm = dummyResults.keys.last;
+    selectedTerm = sinavTakvimi.keys.last;
   }
 
   @override
@@ -59,34 +60,31 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Dönem Seçiniz: ", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                    DropdownButton<String>(
-                        value: selectedTerm,
-                        items: dummyResults.keys.map((String term){
-                          return DropdownMenuItem<String>(
-                          value: term,
-                          child: Text(term),
-                          );
-                    }).toList(),
-                        onChanged: (String? newValue) {
-                          if (newValue != null){
-                            setState(() {
-                              selectedTerm = newValue;
-                            });
-                          }
-                        }
-                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Dönem Seçiniz",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8),
+                      TermDropdown(
+                        terms: sinavTakvimi.keys.toList(),
+                        selectedTerm: selectedTerm,
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedTerm = newValue;
+                          });
+                        },
+                      ),
                     SizedBox(height: 20,),
                     Text("Sınav Takvimi", style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),),
                     Expanded(
                         child: ListView.builder(
-                          itemCount: dummyResults[selectedTerm]?.length ?? 0,
+                          itemCount: sinavTakvimi[selectedTerm]?.length ?? 0,
                           itemBuilder: (context, index) {
-                            var result = dummyResults[selectedTerm]![index];
+                            var result = sinavTakvimi[selectedTerm]![index];
                             return Card(
                               child: ListTile(
                                 title: Text(
@@ -97,7 +95,7 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
                                   children: [
                                     Text(
                                       result["sinavturu"]!,
-                                      textAlign: TextAlign.center, // Ortalamak için
+                                      textAlign: TextAlign.center, 
                                     ),
                                     SizedBox(width: 10,),
                                     Expanded(

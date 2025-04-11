@@ -17,8 +17,10 @@ class Devamsizlikdetay extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F0F0),
       appBar: AppBar(
-        title: Text(dersAdi),
-        backgroundColor: const Color(0xFF8B2231),
+        backgroundColor: Color(0xFF8B2231),
+        title: Text("Devamsızlık Durumu", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [
@@ -38,7 +40,7 @@ class Devamsizlikdetay extends StatelessWidget {
               children: [
                 Text(
                   "$dersAdi Dersine Katılım Detayları",
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
                 Expanded(
@@ -51,10 +53,13 @@ class Devamsizlikdetay extends StatelessWidget {
                         elevation: 3,
                         margin: const EdgeInsets.symmetric(vertical: 8),
                         child: ListTile(
-                          title: Text("Tarih: $tarih"),
+                          title: Text(
+                              "Tarih: $tarih",
+                            style: TextStyle(fontSize: 15),
+                          ),
                           trailing: Text(
                             "Ders Saati: $saat",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize:13,fontWeight: FontWeight.bold),
                           ),
                         ),
                       );

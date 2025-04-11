@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
+import 'package:izukbs/term_dropdownbutton.dart';
 import 'devamsizlikdetay.dart';
 
 class DevamsizlikDurumu extends StatefulWidget {
@@ -10,44 +11,50 @@ class DevamsizlikDurumu extends StatefulWidget {
 }
 
 class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
-  final List<Map<String, dynamic>> devamsizlikListesi = [
-    {
-      'ders': 'Algoritmaya Giriş',
-      'devamsizlik': 30,
-      'detaylar': {
-        '15/03/2025': 0,
-        '22/03/2025': 2,
-        '29/03/2025': 2,
-      }
-    },
-    {
-      'ders': 'Yapay Zeka',
-      'devamsizlik': 69.88,
-      'detaylar': {
-        '15/03/2025': 1,
-        '22/03/2025': 0,
-        '29/03/2025': 2,
-      }
-    },
-    {
-      'ders': 'Programlamaya Giriş',
-      'devamsizlik': 76.33,
-      'detaylar': {
-        '15/03/2025': 2,
-        '22/03/2025': 2,
-        '29/03/2025': 0,
-      }
-    },
-    {
-      'ders': 'Üniversiteyi Anlamak',
-      'devamsizlik': 65.33,
-      'detaylar': {
-        '15/03/2025': 0,
-        '22/03/2025': 1,
-        '29/03/2025': 1,
-      }
-    },
-  ];
+  String selectedTerm = '2024-2025 Bahar';
+
+  final Map<String, List<Map<String, dynamic>>> devamsizlikListesi = {
+    '2024-2025 Bahar': [
+      {
+        'ders': 'Algoritmaya Giriş',
+        'devamsizlik': 30.33,
+        'detaylar': {
+          '15/03/2025': 0,
+          '22/03/2025': 2,
+          '29/03/2025': 2,
+        }
+      },
+      {
+        'ders': 'Yapay Zeka',
+        'devamsizlik': 69.88,
+        'detaylar': {
+          '15/03/2025': 1,
+          '22/03/2025': 0,
+          '29/03/2025': 2,
+        }
+      },
+    ],
+    '2024-2025 Güz': [
+      {
+        'ders': 'Programlamaya Giriş',
+        'devamsizlik': 76.33,
+        'detaylar': {
+          '15/03/2025': 2,
+          '22/03/2025': 2,
+          '29/03/2025': 0,
+        }
+      },
+      {
+        'ders': 'Üniversiteyi Anlamak',
+        'devamsizlik': 65.33,
+        'detaylar': {
+          '15/03/2025': 0,
+          '22/03/2025': 1,
+          '29/03/2025': 1,
+        }
+      },
+    ],
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -76,31 +83,45 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                TermDropdown(
+                  terms: devamsizlikListesi.keys.toList(),
+                  selectedTerm: selectedTerm,
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedTerm = newValue;
+                    });
+                  },
+                ),
+                SizedBox(height: 16),
                 Text(
                   "Ders Devamsızlık Bilgileri",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 10),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: devamsizlikListesi.length,
+                    itemCount: devamsizlikListesi[selectedTerm]!.length,
                     itemBuilder: (context, index) {
+                      final ders = devamsizlikListesi[selectedTerm]![index];
                       return Card(
                         elevation: 3,
                         margin: EdgeInsets.symmetric(vertical: 8),
                         child: ListTile(
-                          title: Text(devamsizlikListesi[index]['ders']),
+                          title: Text(
+                            ders['ders'],
+                            style: TextStyle(fontSize: 15),
+                          ),
                           trailing: Text(
-                            "${devamsizlikListesi[index]['devamsizlik']} %",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            "${ders['devamsizlik']} %",
+                            style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => Devamsizlikdetay(
-                                  dersAdi: devamsizlikListesi[index]['ders'],
-                                  detaylar: devamsizlikListesi[index]['detaylar'],
+                                  dersAdi: ders['ders'],
+                                  detaylar: ders['detaylar'],
                                 ),
                               ),
                             );
@@ -118,4 +139,3 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
     );
   }
 }
-

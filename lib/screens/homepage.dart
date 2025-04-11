@@ -5,8 +5,7 @@ import 'package:izukbs/screens/ogrencibilgileri.dart';
 import 'package:izukbs/screens/sinavsonuclari.dart';
 import 'package:izukbs/screens/sinavtakvimi.dart';
 import 'package:izukbs/screens/transkript.dart';
-
-
+import 'package:auto_size_text/auto_size_text.dart';
 import '../drawer.dart';
 
 void main() {
@@ -57,6 +56,7 @@ class HomePage extends StatelessWidget {
             left: 20,
             right: 20,
             child: Card(
+              color: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
               elevation: 7,
@@ -66,16 +66,16 @@ class HomePage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircleAvatar(
-                      radius: 50,
+                      radius: 30,
                       backgroundColor: Colors.grey[300],
-                      child: Icon(Icons.person, size: 50, color: Colors.grey),
+                      child: Icon(Icons.person, size: 30, color: Colors.grey),
                     ),
                     SizedBox(height: 5),
                     Text("Ayşe Yılmaz",
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                            fontSize: 15, fontWeight: FontWeight.bold)),
                     Text("030722000",
-                        style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+                        style: TextStyle(fontSize: 13, color: Colors.grey[600])),
                     Text("Mühendislik ve Doğa Bilimleri Fakültesi",
                         style: TextStyle(fontSize: 14, color: Colors.grey[700])),
                     Text("Yazılım Mühendisliği",
@@ -86,10 +86,10 @@ class HomePage extends StatelessWidget {
                       children: [
                         Text("3. Sınıf",
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                                fontSize: 13, fontWeight: FontWeight.bold)),
                         Text("AGNO: 3.31",
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                                fontSize: 13, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ],
@@ -98,7 +98,14 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 280,
+            top: 220,
+            left: 20,
+            right: 20,
+            child: Text("Hızlı Menü",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+          ),
+          Positioned(
+            top: 255,
             left: 20,
             right: 20,
             child: Row(
@@ -113,7 +120,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 380,
+            top: 345,
             left: 20,
             right: 20,
             child: Row(
@@ -128,7 +135,14 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 480,
+            top: 440,
+            left: 20,
+            right: 20,
+            child: Text("Duyurular",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+          ),
+          Positioned(
+            top: 470,
             left: 20,
             right: 20,
             child: SizedBox(
@@ -142,6 +156,7 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
+
     );
   }
 
@@ -302,12 +317,14 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Colors.black, size: 40),
-            SizedBox(height: 6),
-            Text(
+            Icon(icon, color: Colors.black, size: 35),
+            SizedBox(height: 10),
+            AutoSizeText(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black, fontSize: 14),
+              style: TextStyle(color: Colors.black, fontSize: 10),
+              maxLines: 2,  // Tek satırda gösterir
+              minFontSize: 10,  // Minimum font boyutunu ayarla
             ),
           ],
         ),

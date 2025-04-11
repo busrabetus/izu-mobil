@@ -21,19 +21,19 @@ class _drawerState extends State<drawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Colors.white,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           SizedBox(
-            height: 130,
+            height: MediaQuery.of(context).size.height* 0.2,
             child: DrawerHeader(
               decoration: BoxDecoration(color: Color(0xFF8B2231)),
               child: Center(
-                child: Text(
-                  'İstanbul Sabahattin Zaim Üniversitesi',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
+                child: Image.asset(
+                    "assets/images/izulogodr.png",
+                  height: MediaQuery.of(context).size.height * 0.1,
+                )
               ),
             ),
           ),
