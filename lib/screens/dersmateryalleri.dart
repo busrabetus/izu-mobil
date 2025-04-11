@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
+import 'package:izukbs/term_dropdownbutton.dart';
 
 class DersMateryalleri extends StatefulWidget {
   const DersMateryalleri({super.key});
@@ -9,13 +10,21 @@ class DersMateryalleri extends StatefulWidget {
 }
 
 class _DersMateryalleriState extends State<DersMateryalleri> {
-  // Örnek ders listesi
-  final List<String> dersler = [
-    "Veri Yapıları",
-    "Algoritmalar",
-    "Veritabanı Sistemleri",
-    "İşletim Sistemleri"
-  ];
+  String selectedTerm = '2024-2025 Bahar';
+
+  final Map<String, List<String>> dersler = {
+    '2024-2025 Bahar': [
+      'Veri Yapıları',
+      'Algoritmalar',
+      'Veritabanı Sistemleri',
+      'İşletim Sistemleri',
+    ],
+    '2024-2025 Güz': [
+      'Programlamaya Giriş',
+      'Web Programlama',
+      'Mobil Uygulama Geliştirme',
+    ],
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +37,45 @@ class _DersMateryalleriState extends State<DersMateryalleri> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       drawer: const drawer(),
-      body: ListView.builder(
-        itemCount: dersler.length,
-        itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ListTile(
-              title: Text(dersler[index]),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DersDetaySayfasi(dersAdi: dersler[index]),
-                  ),
-                );
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TermDropdown(
+              terms: dersler.keys.toList(),
+              selectedTerm: selectedTerm,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedTerm = newValue;
+                });
               },
             ),
-          );
-        },
+            Expanded(
+              child: ListView.builder(
+                itemCount: dersler[selectedTerm]!.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: ListTile(
+                      title: Text(dersler[selectedTerm]![index]),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DersDetaySayfasi(
+                              dersAdi: dersler[selectedTerm]![index],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -61,8 +90,9 @@ class DersDetaySayfasi extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(dersAdi),
         backgroundColor: Color(0xFF8B2231),
+        title: const Text("Ders Materyalleri", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
