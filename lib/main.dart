@@ -15,7 +15,7 @@ class Izukbs extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Login_page(),
+      home: Login_Page(),
     );
   }
 }

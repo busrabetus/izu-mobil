@@ -102,7 +102,7 @@ class HomePage extends StatelessWidget {
             left: 20,
             right: 20,
             child: Text("Hızlı Menü",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
           ),
           Positioned(
             top: 255,
@@ -111,11 +111,11 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                menuButton(Icons.person, "Öğrenci Bilgileri", context, ogrencibilgileri()),
+                menuButton(Icons.person, "Öğrenci\nBilgileri", context, ogrencibilgileri()),
                 SizedBox(width: 8),
-                menuButton(Icons.calendar_today, "Ders\n Programı", context, dersprogrami()),
+                menuButton(Icons.calendar_today, "Ders\nProgramı", context, dersprogrami()),
                 SizedBox(width: 8),
-                menuButton(Icons.assignment, "Sınav Sonuçları", context, sinavsonuclari()),
+                menuButton(Icons.assignment, "Sınav\nSonuçları", context, sinavsonuclari()),
               ],
             ),
           ),
@@ -126,11 +126,11 @@ class HomePage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                menuButton(Icons.note, "Transkript Belgesi", context, transkript()),
+                menuButton(Icons.note, "Transkript\nBelgesi", context, transkript()),
                 SizedBox(width: 8),
-                menuButton(Icons.auto_graph, "Devamsızlık Durumu", context, DevamsizlikDurumu()),
+                menuButton(Icons.auto_graph, "Devamsızlık\nDurumu", context, DevamsizlikDurumu()),
                 SizedBox(width: 8),
-                menuButton(Icons.assignment, "Sınav\n Takvimi", context, sinavtakvimi()),
+                menuButton(Icons.assignment, "Sınav\nTakvimi", context, sinavtakvimi()),
               ],
             ),
           ),
@@ -138,30 +138,37 @@ class HomePage extends StatelessWidget {
             top: 440,
             left: 20,
             right: 20,
-            child: Text("Duyurular",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+            child: Text(
+              "Duyurular",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+                letterSpacing: 1.2,
+              ),
+            ),
           ),
+
           Positioned(
             top: 470,
             left: 20,
             right: 20,
             child: SizedBox(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(5, (index) => _buildCard(context, index)),
-                ),
-              )
-            )
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(5, (index) => _buildCard(context, index)),
+                  ),
+                )
+            ),
           )
         ],
       ),
-
     );
   }
 
   Widget _buildCard(BuildContext context, int index){
-  List<Map<String, String>> cardData = [
+    List<Map<String, String>> cardData = [
       {
         'image': 'assets/images/hosgeldin_1.jpg',
         'text': 'Ramazan ayı, manevi huzurun doruğa ulaştığı, paylaşma ve dayanışmanın en güzel örneklerinin yaşandığı mübarek bir zaman dilimidir. İstanbul Sabahattin Zaim Üniversitesinde de Ramazan ayı, her yıl büyük bir coşku ve heyecanla karşılanır. Üniversitenin huzur veren atmosferinde Ramazan, sadece oruç tutmaktan ibaret değil; aynı zamanda birlik ve beraberliği pekiştiren özel etkinliklerle doludur. Kampüsün her köşesinde Ramazan’ın bereketini hissettiren etkinlikler düzenlenir. Geleneksel iftar programları, öğrenci ve akademisyenleri bir araya getirerek, paylaşmanın ve birlikte olmanın verdiği mutluluğu artırır. Üniversite bahçesinde kurulan iftar sofraları, farklı kültürlerden öğrencileri bir araya getirerek, Ramazanın evrensel mesajını en güzel şekilde yansıtır. Hatiplerin ve akademisyenlerin katıldığı söyleşiler, Ramazan’ın manevi derinliğini kavramaya yardımcı olur. Teravih namazları, öğrencilerin ve akademisyenlerin cemaatle bir araya geldiği manevi buluşmalara sahne olur. Bu mübarek ay boyunca Zaim Üniversitesi, ilimle maneviyatın iç içe geçtiği bir atmosfer sunarak öğrencilerine sadece akademik değil, aynı zamanda manevi anlamda da büyük bir kazanım sağlar. Ramazan ayının huzuru ve coşkusu, bu köklü üniversitenin sıcak ortamında daha da anlam kazanır.',
@@ -190,75 +197,78 @@ class HomePage extends StatelessWidget {
     String imagePath = cardData[index]['image']!;
 
     return Container(
-      width: 200,
-      height: 300,
-      margin: EdgeInsets.only(right: 10, top: 5),
+      width: 220,
+      height: 320,
+      margin: EdgeInsets.only(right: 16, top: 8),
       decoration: BoxDecoration(
-        color: Colors.grey[400],
-        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 6,
+            spreadRadius: 2,
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 8, right: 8, left: 8),
+            padding: EdgeInsets.all(8),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(7),
+              borderRadius: BorderRadius.circular(15),
               child: Image.asset(
                 cardData[index]['image']!,
-                width: 200,
-                height: 60,
-                fit: BoxFit.contain,
+                width: 220,
+                height: 120,
+                fit: BoxFit.cover,
               ),
             ),
           ),
           SizedBox(height: 10),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 4),
-            child: Stack(
-              children: [
-                Container(
-                  height: 210,
-                  width: double.infinity,
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-
-                Column(
-                  children: [
-                    Text(
-                      shortText,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Container(
+              height: 180,
+              width: double.infinity,
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    shortText,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      height: 1.6,
                     ),
-                    if (text.length > 50)
-                      TextButton(
-                        onPressed: () {
-                          _showFullTextDialog(context, text, imagePath);
-                        },
-                        child: Text(
-                          "Devamını Gör",
-                          style: TextStyle(color: Colors.blue, fontSize: 13),
-                        ),
+                    textAlign: TextAlign.justify,
+                  ),
+                  if (text.length > 50)
+                    TextButton(
+                      onPressed: () {
+                        _showFullTextDialog(context, text, imagePath);
+                      },
+                      child: Text(
+                        "Devamını Gör",
+                        style: TextStyle(color: Colors.blue, fontSize: 14),
                       ),
-                  ],
-                ),
-              ],
+                    ),
+                ],
+              ),
             ),
-          )
-
+          ),
         ],
       ),
     );
   }
+
 
   void _showFullTextDialog(BuildContext context, String text, String imagePath) {
     showDialog(
@@ -332,4 +342,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-

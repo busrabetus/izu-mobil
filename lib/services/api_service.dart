@@ -1,6 +1,6 @@
-//ornek bir api_service sayfası. bunu gelistirip degistirecegiz...
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 
 class ApiService {
   static const String baseUrl = "https://okulsistemi-api.vercel.app/api"; //buraya saitin verecegi adres gelecek
@@ -27,3 +27,6 @@ class ApiService {
     }
   }
 }
+
+
+
