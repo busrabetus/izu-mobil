@@ -113,7 +113,7 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
                           ),
                           trailing: Text(
                             "${ders['devamsizlik']} %",
-                            style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
                             Navigator.push(

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:izukbs/drawer.dart';
-import 'devamsizlikdurumu.dart';
 
 class Devamsizlikdetay extends StatelessWidget {
   final String dersAdi;

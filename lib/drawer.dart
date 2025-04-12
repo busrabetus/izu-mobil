@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/screens/acildurumtelno.dart';
+import 'package:izukbs/screens/login_page.dart';
 import 'package:izukbs/screens/basvuruformlari.dart';
 import 'package:izukbs/screens/sinavsonuclari.dart';
 import 'package:izukbs/screens/sinavtakvimi.dart';
@@ -134,6 +135,17 @@ class _drawerState extends State<drawer> {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => basvuruformlari()),
+              );
+            },
+          ),
+
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Çıkış Yap'),
+            onTap: () async { // saidlerin kullandıgı backend teknolojisine göre logout işlemi gerçekleştireceğiz burada
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Login_Page()),
               );
             },
           ),
