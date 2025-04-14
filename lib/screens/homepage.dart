@@ -39,6 +39,7 @@ class HomePage extends StatelessWidget {
       drawer: drawer(),
       body: Stack(
         children: [
+
           Column(
             children: [
               Container(
@@ -97,6 +98,15 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
+          Align(
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets/images/circles.png',
+              width: 400,
+              height: 400,
+              fit: BoxFit.cover,
+            ),
+          ),
           Positioned(
             top: 220,
             left: 20,
@@ -134,6 +144,8 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
+
+
           Positioned(
             top: 440,
             left: 20,
@@ -161,7 +173,7 @@ class HomePage extends StatelessWidget {
                   ),
                 )
             ),
-          )
+          ),
         ],
       ),
     );
@@ -267,6 +279,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
     );
+
   }
 
 
