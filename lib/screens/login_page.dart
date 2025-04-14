@@ -131,22 +131,6 @@ class _Login_pageState extends State<Login_Page> {
                                 borderRadius: BorderRadius.circular(10),
                               )),
                           child: Text("Giriş - Sign In")),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          launchUrlService('https://portal.izu.edu.tr/SignUp');
-                        },
-                        child: Text(
-                            'Hesap Oluştur (Create Account)',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                                color: Color(0xFF8B2231),
-                            ),
-                          ),
-                      ),
                     ],
                   ),
                 ),
