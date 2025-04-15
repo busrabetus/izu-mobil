@@ -27,14 +27,23 @@ class _drawerState extends State<drawer> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           SizedBox(
-            height: MediaQuery.of(context).size.height* 0.2,
+            height: MediaQuery.of(context).size.height * 0.2,
             child: DrawerHeader(
-              decoration: BoxDecoration(color: Color(0xFF8B2231)),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/dji_0199.jpg"),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.4),
+                    BlendMode.darken,
+                  ),
+                ),
+              ),
               child: Center(
                 child: Image.asset(
-                    "assets/images/izulogodr.png",
+                  "assets/images/izulogodr.png",
                   height: MediaQuery.of(context).size.height * 0.1,
-                )
+                ),
               ),
             ),
           ),
@@ -138,11 +147,10 @@ class _drawerState extends State<drawer> {
               );
             },
           ),
-
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Çıkış Yap'),
-            onTap: () async { // saidlerin kullandıgı backend teknolojisine göre logout işlemi gerçekleştireceğiz burada
+            onTap: () async {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => Login_Page()),
