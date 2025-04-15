@@ -63,7 +63,7 @@ class HomePage extends StatelessWidget {
                       color: Color(0xFF8B2231),
                     ),
                     Transform.translate(
-                      offset: Offset(0, -80), // Card yukarı taşınıyor
+                      offset: Offset(0, -80),
                       child: Center(
                         child: Card(
                           color: Colors.white,
