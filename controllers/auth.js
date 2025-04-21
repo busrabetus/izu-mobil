@@ -47,11 +47,11 @@ exports.register = async (req, res) => {
 
 
 // 📌 Kullanıcı Girişi (Login)
-exports.login = async (req, res) => {
+exports.login = (req, res) => {
     const { email, password } = req.body;
 
     const sql = "SELECT * FROM user WHERE email = ?";
-    db.query(sql, [email], async (err, results) => {
+    db.query(sql, [email], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
 
         if (results.length === 0) {
@@ -60,9 +60,8 @@ exports.login = async (req, res) => {
 
         const user = results[0];
 
-        // Şifre karşılaştırması için bcrypt.compare kullanıyoruz
-        const isMatch = await bcrypt.compare(password, user.passwordhash);
-        if (!isMatch) {
+        
+        if (password !== user.passwordhash) {
             return res.status(401).json({ message: "Geçersiz şifre!" });
         }
 
