@@ -31,10 +31,10 @@ class _drawerState extends State<drawer> {
             child: DrawerHeader(
               decoration: BoxDecoration(color: Color(0xFF8B2231)),
               child: Center(
-                child: Image.asset(
+                  child: Image.asset(
                     "assets/images/izulogodr.png",
-                  height: MediaQuery.of(context).size.height * 0.1,
-                )
+                    height: MediaQuery.of(context).size.height * 0.1,
+                  )
               ),
             ),
           ),
