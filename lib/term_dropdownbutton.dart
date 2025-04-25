@@ -15,6 +15,7 @@ class TermDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+      dropdownColor: Colors.white,
       value: selectedTerm,
       isExpanded: true,
       items: terms.map((term) {

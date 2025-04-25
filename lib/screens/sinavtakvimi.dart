@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
 import 'package:izukbs/term_dropdownbutton.dart';
+import 'package:izukbs/widgets/custom_appbar.dart';
 
 class sinavtakvimi extends StatefulWidget {
   const sinavtakvimi({super.key});
@@ -40,14 +41,9 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  Color(0xFFF0F0F0),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF8B2231),
-        title: Text("Sınav Takvimi", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
-      drawer: drawer(),
+        backgroundColor:  Color(0xFFF0F0F0),
+        appBar: const CustomAppBar(title: "Sınav Takvimi"),
+        drawer: drawer(),
         body: Stack(
             children: [
               Align(
@@ -78,54 +74,54 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
                           });
                         },
                       ),
-                    SizedBox(height: 20,),
-                    Text("Sınav Takvimi", style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),),
-                    Expanded(
-                        child: ListView.builder(
-                          itemCount: sinavTakvimi[selectedTerm]?.length ?? 0,
-                          itemBuilder: (context, index) {
-                            var result = sinavTakvimi[selectedTerm]![index];
-                            return Card(
-                              child: ListTile(
-                                title: Text(
-                                  result["ders"]!,
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      SizedBox(height: 20,),
+                      Text("Sınav Takvimi", style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),),
+                      Expanded(
+                          child: ListView.builder(
+                            itemCount: sinavTakvimi[selectedTerm]?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              var result = sinavTakvimi[selectedTerm]![index];
+                              return Card(
+                                child: ListTile(
+                                  title: Text(
+                                    result["ders"]!,
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                  ),
+                                  subtitle: Row(
+                                    children: [
+                                      Text(
+                                        result["sinavturu"]!,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(width: 10,),
+                                      Expanded(
+                                        child: Text(
+                                          result["tarih"]!,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          result["saat"]!,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          result["derslik"]!,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                subtitle: Row(
-                                  children: [
-                                    Text(
-                                      result["sinavturu"]!,
-                                      textAlign: TextAlign.center, 
-                                    ),
-                                    SizedBox(width: 10,),
-                                    Expanded(
-                                      child: Text(
-                                        result["tarih"]!,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        result["saat"]!,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        result["derslik"]!,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
+                              );
 
-                          },
-                        )
-                    )
-                  ],
-                )
+                            },
+                          )
+                      )
+                    ],
+                  )
               )
 
 

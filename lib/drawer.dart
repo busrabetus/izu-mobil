@@ -44,7 +44,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HomePage()),
+                MaterialPageRoute(builder: (context) => AnaSayfa()),
               );
             },
           ),
@@ -74,7 +74,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => dersprogrami()),
+                MaterialPageRoute(builder: (context) => DersProgrami()),
               );
             },
           ),
