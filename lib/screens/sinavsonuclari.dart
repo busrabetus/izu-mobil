@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
 import '../term_dropdownbutton.dart';
+import 'package:izukbs/widgets/custom_appbar.dart';
 
 class sinavsonuclari extends StatefulWidget {
   const sinavsonuclari({super.key});
@@ -10,7 +11,7 @@ class sinavsonuclari extends StatefulWidget {
 }
 
 class _sinavsonuclariState extends State<sinavsonuclari> {
-   late String selectedTerm;
+  late String selectedTerm;
 
   final Map<String, List<Map<String, String>>> sinavSonuclari = {
     "2023-2024 Bahar": [
@@ -28,6 +29,7 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
       {"ders": "Sistem Analizi ve Tasarımı", "vize": "85", "final": "90", "harf": "BA"},
       {"ders": "Görüntü İşleme", "vize": "78","final": "80", "harf": "CB"},
       {"ders": "3D Modelleme ve Animasyon", "vize": "90","final": "100", "harf": "AA"},
+      {"ders": "3D Modelleme ve Animasyon", "vize": "90","final": "100", "harf": "AA"},
     ],
   };
 
@@ -41,12 +43,7 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF0F0F0),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF8B2231),
-        title: Text("Sınav Sonuçları", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
+      appBar: const CustomAppBar(title: "Sınav Sonuçları"),
       drawer: drawer(),
       body: Stack(
         children: [

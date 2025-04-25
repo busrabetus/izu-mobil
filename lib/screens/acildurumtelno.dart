@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:izukbs/drawer.dart';
+import 'package:izukbs/widgets/custom_appbar.dart';
 
 class acildurumtelno extends StatefulWidget {
   const acildurumtelno({super.key});
@@ -23,12 +24,7 @@ class _acildurumtelnoState extends State<acildurumtelno> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF0F0F0),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF8B2231),
-        title: Text("Acil Durum İletişim Telefonu", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
+      appBar: const CustomAppBar(title: "Acil Durum İletişim Telefonu"),
       drawer: drawer(),
       body: Stack(
         children: [
@@ -178,23 +174,23 @@ class _acildurumtelnoState extends State<acildurumtelno> {
 
                         SizedBox(height: 15),
                         Center(
-                        child: ElevatedButton(
+                            child: ElevatedButton(
 
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Acil durum kişisi kaydedildi"),
-                                duration: Duration(seconds: 2),
-                                behavior: SnackBarBehavior.floating, // Ekranda yukarıda durması için
+                              onPressed: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Acil durum kişisi kaydedildi"),
+                                    duration: Duration(seconds: 2),
+                                    behavior: SnackBarBehavior.floating, // Ekranda yukarıda durması için
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF8B2231).withOpacity(0.3),
+                                foregroundColor: Colors.white,
                               ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF8B2231).withOpacity(0.3),
-                            foregroundColor: Colors.white,
-                          ),
-                          child: Text("Kaydet"),
-                        )
+                              child: Text("Kaydet"),
+                            )
                         )
 
                       ],

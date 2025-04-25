@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../drawer.dart';
+import '../widgets/custom_appbar.dart';
 
 class basvuruformlari extends StatefulWidget {
   const basvuruformlari({super.key});
@@ -58,12 +59,7 @@ class _basvuruformlariState extends State<basvuruformlari> {
 
     return Scaffold(
       backgroundColor: Color(0xFFF0F0F0),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF8B2231),
-        title: const Text("Başvuru Formları", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
+      appBar: const CustomAppBar(title: "Başvuru Formları"),
       drawer: drawer(),
       body: Stack(
         children: [

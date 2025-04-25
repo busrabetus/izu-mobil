@@ -120,7 +120,7 @@ class _Login_pageState extends State<Login_Page> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomePage()),
+                                  builder: (context) => const AnaSayfa()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -139,13 +139,13 @@ class _Login_pageState extends State<Login_Page> {
                           launchUrlService('https://portal.izu.edu.tr/SignUp');
                         },
                         child: Text(
-                            'Hesap Oluştur (Create Account)',
-                            style: GoogleFonts.poppins(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                                color: Color(0xFF8B2231),
-                            ),
+                          'Hesap Oluştur (Create Account)',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF8B2231),
                           ),
+                        ),
                       ),
                     ],
                   ),

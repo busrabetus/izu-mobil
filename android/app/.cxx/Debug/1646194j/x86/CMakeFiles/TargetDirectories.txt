@@ -1,0 +1,2 @@
+/Users/busrabetulposlu/StudioProjects/izukbs/android/app/.cxx/Debug/1646194j/x86/CMakeFiles/edit_cache.dir
+/Users/busrabetulposlu/StudioProjects/izukbs/android/app/.cxx/Debug/1646194j/x86/CMakeFiles/rebuild_cache.dir

@@ -5,340 +5,311 @@ import 'package:izukbs/screens/ogrencibilgileri.dart';
 import 'package:izukbs/screens/sinavsonuclari.dart';
 import 'package:izukbs/screens/sinavtakvimi.dart';
 import 'package:izukbs/screens/transkript.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:izukbs/widgets/custom_appbar.dart';
 import '../drawer.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class AnaSayfa extends StatefulWidget {
+  const AnaSayfa({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
-  }
+  State<AnaSayfa> createState() => _AnaSayfaState();
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class _AnaSayfaState extends State<AnaSayfa> {
+  final List<Map<String, String>> duyurular = [
+    {
+      'baslik': 'Yaz Dönemi Kayıtları Başladı',
+      'icerik': '2023-2024 eğitim öğretim yılı yaz dönemi kayıtları başlamıştır. Son başvuru tarihi 15 Haziran 2024\'tür. Ders seçimlerinizi akademik danışmanınızla görüşerek yapınız.',
+      'resim': 'https://picsum.photos/250/150?random=1',
+    },
+    {
+      'baslik': 'Mezuniyet Töreni Duyurusu',
+      'icerik': '2024 yılı mezuniyet töreni 30 Haziran 2024 tarihinde kampüs amfisinde yapılacaktır. Tüm mezun adaylarının saat 10:00\'da hazır bulunmaları gerekmektedir.',
+      'resim': 'https://picsum.photos/250/150?random=2',
+    },
+    {
+      'baslik': 'Kütüphane Yaz Çalışma Saatleri',
+      'icerik': 'Yaz dönemi boyunca kütüphane çalışma saatleri hafta içi 08:00-18:00, hafta sonu 10:00-16:00 olarak belirlenmiştir.',
+      'resim': 'https://picsum.photos/250/150?random=3',
+    },
+    {
+      'baslik': 'Staj Başvuru Son Tarihi',
+      'icerik': 'Yaz stajı için son başvuru tarihi 31 Mayıs 2024 olarak belirlenmiştir. Staj dosyalarınızı eksiksiz doldurarak bölüm sekreterliğine teslim ediniz.',
+      'resim': 'https://picsum.photos/250/150?random=4',
+    },
+    {
+      'baslik': 'Staj Başvuru Son Tarihi',
+      'icerik': 'Yaz stajı için son başvuru tarihi 31 Mayıs 2024 olarak belirlenmiştir. Staj dosyalarınızı eksiksiz doldurarak bölüm sekreterliğine teslim ediniz.',
+      'resim': 'https://picsum.photos/250/150?random=4',
+    },
+    {
+      'baslik': 'Staj Başvuru Son Tarihi',
+      'icerik': 'Yaz stajı için son başvuru tarihi 31 Mayıs 2024 olarak belirlenmiştir. Staj dosyalarınızı eksiksiz doldurarak bölüm sekreterliğine teslim ediniz.',
+      'resim': 'https://picsum.photos/250/150?random=4',
+    },
+    {
+      'baslik': 'Staj Başvuru Son Tarihi',
+      'icerik': 'Yaz stajı için son başvuru tarihi 31 Mayıs 2024 olarak belirlenmiştir. Staj dosyalarınızı eksiksiz doldurarak bölüm sekreterliğine teslim ediniz.',
+      'resim': 'https://picsum.photos/250/150?random=4',
+    },
+
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF8B2231),
-        title: Text("Ana Sayfa", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
+      appBar: const CustomAppBar(title: "Ana Sayfa"),
       drawer: drawer(),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Container(
-                height: 150,
-                color: Color(0xFF8B2231),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+              child: Card(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                elevation: 7,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CircleAvatar(
+                        radius: 45,
+                        backgroundColor: Color(0xFF8B2231),
+                        child: Icon(Icons.person, size: 40, color: Colors.white),
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        "Ayşe Yılmaz",
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        "030722000",
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "Mühendislik ve Doğa Bilimleri Fakültesi",
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Text(
+                        "Yazılım Mühendisliği",
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      ),
+                      const Divider(thickness: 1, height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          const Text(
+                            "3. Sınıf",
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                          const Text(
+                            "AGNO: 3.31",
+                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              Expanded(
-                child: Container(
-                  color: Colors.grey[300],
+            ),
+
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  "Hızlı Menü",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      _buildMenuButton(Icons.person, "Öğrenci\nBilgileri", context, ogrencibilgileri()),
+                      const SizedBox(width: 10),
+                      _buildMenuButton(Icons.calendar_today, "Ders\nProgramı", context, DersProgrami()),
+                      const SizedBox(width: 10),
+                      _buildMenuButton(Icons.assignment, "Sınav\nSonuçları", context, sinavsonuclari()),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      _buildMenuButton(Icons.note, "Transkript\nBelgesi", context, transkript()),
+                      const SizedBox(width: 10),
+                      _buildMenuButton(Icons.auto_graph, "Devamsızlık\nDurumu", context, DevamsizlikDurumu()),
+                      const SizedBox(width: 10),
+                      _buildMenuButton(Icons.calendar_month, "Sınav\nTakvimi", context, sinavtakvimi()),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  "Duyurular",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            SizedBox(
+              height: 280,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(left: 20, right: 10),
+                itemCount: duyurular.length,
+                itemBuilder: (context, index) {
+                  return _buildDuyuruCard(
+                    duyurular[index]['baslik']!,
+                    duyurular[index]['icerik']!,
+                    duyurular[index]['resim']!,
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuButton(IconData icon, String text, BuildContext context, Widget page) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => page));
+        },
+        child: Container(
+          height: 100,
+          margin: const EdgeInsets.only(bottom: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 6,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 32, color: const Color(0xFF8B2231)),
+              const SizedBox(height: 8),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          Positioned(
-            left: 20,
-            right: 20,
-            child: Card(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              elevation: 7,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.grey[300],
-                      child: Icon(Icons.person, size: 30, color: Colors.grey),
-                    ),
-                    SizedBox(height: 5),
-                    Text("Ayşe Yılmaz",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold)),
-                    Text("030722000",
-                        style: TextStyle(fontSize: 13, color: Colors.grey[600])),
-                    Text("Mühendislik ve Doğa Bilimleri Fakültesi",
-                        style: TextStyle(fontSize: 14, color: Colors.grey[700])),
-                    Text("Yazılım Mühendisliği",
-                        style: TextStyle(fontSize: 14, color: Colors.grey[700])),
-                    Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text("3. Sınıf",
-                            style: TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.bold)),
-                        Text("AGNO: 3.31",
-                            style: TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 220,
-            left: 20,
-            right: 20,
-            child: Text("Hızlı Menü",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-          ),
-          Positioned(
-            top: 255,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                menuButton(Icons.person, "Öğrenci\nBilgileri", context, ogrencibilgileri()),
-                SizedBox(width: 8),
-                menuButton(Icons.calendar_today, "Ders\nProgramı", context, dersprogrami()),
-                SizedBox(width: 8),
-                menuButton(Icons.assignment, "Sınav\nSonuçları", context, sinavsonuclari()),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 345,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                menuButton(Icons.note, "Transkript\nBelgesi", context, transkript()),
-                SizedBox(width: 8),
-                menuButton(Icons.auto_graph, "Devamsızlık\nDurumu", context, DevamsizlikDurumu()),
-                SizedBox(width: 8),
-                menuButton(Icons.assignment, "Sınav\nTakvimi", context, sinavtakvimi()),
-              ],
-            ),
-          ),
-          Positioned(
-            top: 440,
-            left: 20,
-            right: 20,
-            child: Text(
-              "Duyurular",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-                letterSpacing: 1.2,
-              ),
-            ),
-          ),
-
-          Positioned(
-            top: 470,
-            left: 20,
-            right: 20,
-            child: SizedBox(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(5, (index) => _buildCard(context, index)),
-                  ),
-                )
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
-
-  Widget _buildCard(BuildContext context, int index){
-    List<Map<String, String>> cardData = [
-      {
-        'image': 'assets/images/hosgeldin_1.jpg',
-        'text': 'Ramazan ayı, manevi huzurun doruğa ulaştığı, paylaşma ve dayanışmanın en güzel örneklerinin yaşandığı mübarek bir zaman dilimidir. İstanbul Sabahattin Zaim Üniversitesinde de Ramazan ayı, her yıl büyük bir coşku ve heyecanla karşılanır. Üniversitenin huzur veren atmosferinde Ramazan, sadece oruç tutmaktan ibaret değil; aynı zamanda birlik ve beraberliği pekiştiren özel etkinliklerle doludur. Kampüsün her köşesinde Ramazan’ın bereketini hissettiren etkinlikler düzenlenir. Geleneksel iftar programları, öğrenci ve akademisyenleri bir araya getirerek, paylaşmanın ve birlikte olmanın verdiği mutluluğu artırır. Üniversite bahçesinde kurulan iftar sofraları, farklı kültürlerden öğrencileri bir araya getirerek, Ramazanın evrensel mesajını en güzel şekilde yansıtır. Hatiplerin ve akademisyenlerin katıldığı söyleşiler, Ramazan’ın manevi derinliğini kavramaya yardımcı olur. Teravih namazları, öğrencilerin ve akademisyenlerin cemaatle bir araya geldiği manevi buluşmalara sahne olur. Bu mübarek ay boyunca Zaim Üniversitesi, ilimle maneviyatın iç içe geçtiği bir atmosfer sunarak öğrencilerine sadece akademik değil, aynı zamanda manevi anlamda da büyük bir kazanım sağlar. Ramazan ayının huzuru ve coşkusu, bu köklü üniversitenin sıcak ortamında daha da anlam kazanır.',
+  Widget _buildDuyuruCard(String baslik, String icerik, String resimUrl) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Duyuru Detayı"),
+              content: const Text("Bu özellik yakında eklenecek."),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("Tamam"),
+                ),
+              ],
+            );
+          },
+        );
       },
-      {
-        'image': 'assets/images/çanakkalekongresi.png',
-        'text': 'İstanbul Zaim Üniversitesi, akademik dünyada önemli bir yer tutan 5. Uluslararası Çanakkale Kongresini büyük bir heyecanla gerçekleştirdi. Her yıl farklı disiplinlerde yapılan bu kongre, bilim dünyasını bir araya getirerek, araştırmaların ve fikirlerin paylaşıldığı bir platform sunuyor.Bu yılki kongre, Çanakkalenin tarihi ve kültürel mirasını daha derinlemesine incelemeyi amaçlayarak, katılımcılara benzersiz bir deneyim sundu. Uluslararası düzeydeki akademisyenler, araştırmacılar ve öğrenciler, kongrede çeşitli oturumlar, paneller ve seminerlerle bilgi alışverişinde bulundular.Uluslararası Çanakkale Kongresi, sadece bilimsel anlamda değil, aynı zamanda sosyal ve kültürel açıdan da zengin bir program sunarak, katılımcılara tarih, edebiyat, sosyoloji ve diğer sosyal bilimler alanlarında yeni bakış açıları kazandırmayı hedefledi. Kongre kapsamında yapılan sunumlar, Çanakkalenin Türk tarihi için ne kadar önemli bir yere sahip olduğunu bir kez daha gözler önüne serdi.Ayrıca, kongreye katılanlar, Çanakkalenin hem geçmişteki hem de günümüzdeki kültürel ve toplumsal dinamiklerini tartışma fırsatı buldular. Katılımcıların bu deneyimden, sadece akademik anlamda değil, aynı zamanda insani ve kültürel anlamda da önemli kazanımlar sağladıkları bir ortam yaratıldı. İstanbul Zaim Üniversitesi, 5. Uluslararası Çanakkale Kongresi ile hem akademik dünyadaki yerini güçlendirirken, hem de geleceğin liderlerine ve bilim insanlarına ilham verme misyonunu bir kez daha pekiştirdi. Bu tür uluslararası organizasyonlar, üniversitenin hem ulusal hem de küresel düzeyde daha geniş bir etki alanına sahip olmasını sağlıyor.',},
-      {
-        'image': 'assets/images/kongre.jpg',
-        'text': 'İstanbul Zaim Üniversitesi, akademik dünyada önemli bir adım daha atarak 2. Lisansüstü Öğrenci Kongresi’ni başarıyla gerçekleştirdi. Bu yıl ikincisi düzenlenen kongre, lisansüstü öğrencilerin bilimsel araştırmalarını sergileyebileceği, fikir alışverişinde bulunabileceği ve akademik kariyerlerine katkı sağlayacak bir platform sundu.Kongre, üniversitenin bilimsel düşünceye ve araştırmaya verdiği önemin bir yansıması olarak, lisansüstü öğrencilerin teorik bilgilerini pratiğe dökme ve ulusal düzeyde tanıtma fırsatı sundu. Öğrenciler, kendi alanlarında gerçekleştirdikleri araştırmalarını sunarak, diğer akademisyenlerle bilgi alışverişinde bulundular.Lisansüstü Öğrenci Kongresi’nde farklı disiplinlerden gelen katılımcılar, seminerler, paneller ve çalıştaylarla zengin bir programda yer aldılar. Katılımcılar, sadece akademik konularda değil, aynı zamanda profesyonel gelişimlerine katkı sağlayacak önemli bilgiler edindiler.Bu kongre, öğrencilerin araştırma yapma süreçlerini daha derinlemesine anlamalarına, yeni bakış açıları kazanmalarına ve ulusal ve uluslararası akademik çevrelerde tanınırlıklarını artırmalarına olanak sağladı. Öğrenciler, farklı disiplinlerdeki sunumları ve tartışmaları takip ederek, araştırma dünyasındaki gelişmeleri yakından izleme fırsatı buldular.İstanbul Zaim Üniversitesi, 2. Lisansüstü Öğrenci Kongresi ile akademik anlamda ilerleme kaydederken, aynı zamanda üniversite öğrencilerinin bilimsel gelişimlerine katkıda bulunarak, araştırma ve akademik mükemmeliyet konusunda önemli bir adım atmış oldu.',
-      },
-      {
-        'image': 'assets/images/ii-uluslararasi-sağlik-bilimleri-kongresi_.png',
-        'text': 'İstanbul Zaim Üniversitesi, sağlık alanındaki bilgi ve deneyimlerin paylaşıldığı önemli bir etkinlik olan 1. Uluslararası ve 2. Ulusal Sağlık Kongresini düzenleyecek. Bu kongre, sağlık bilimleri, tıbbî araştırmalar ve sağlık politikaları alanındaki en son gelişmeleri ele almak ve ulusal ve uluslararası düzeydeki uzmanları bir araya getirmek amacıyla gerçekleştirilecek.Kongre, sağlık sektöründeki akademisyenler, araştırmacılar, profesyoneller ve öğrenciler için eşsiz bir fırsat sunuyor. Katılımcılar, sağlık alanındaki en güncel konular üzerinde derinlemesine tartışmalar yapacak, bilimsel sunumlar ve paneller aracılığıyla bilgi alışverişinde bulunacaklar. Kongre, yalnızca sağlık bilimleriyle ilgili akademik çalışmaların öne çıkmasını sağlamakla kalmayacak, aynı zamanda sağlık alanındaki yenilikçi yaklaşımlar, uygulamalar ve çözüm önerileri üzerine de önemli fikirler ortaya koyacak.1. Uluslararası ve 2. Ulusal Sağlık Kongresi, sağlık alanındaki disiplinler arası işbirliğini teşvik etmeyi, yenilikçi araştırmaları desteklemeyi ve sağlık sistemlerinin gelişimine katkı sağlamayı amaçlıyor. Katılımcılar, farklı sağlık alanlarındaki uzmanlarla tanışacak, global sağlık sorunları üzerine fikir yürütecek ve sağlık politikaları hakkında daha geniş bir perspektif kazanacaklar.Bu prestijli etkinlik, İstanbul Zaim Üniversitesi’nin sağlık bilimleri alanındaki akademik gücünü bir kez daha gözler önüne sererken, üniversitenin sağlık alanındaki ulusal ve uluslararası işbirliklerini güçlendirmeyi de hedefliyor. Kongre, sağlık alanındaki en son araştırmaların, yenilikçi uygulamaların ve toplumsal sağlık sorunlarının ele alındığı dinamik bir platform oluşturacak.',
-      },
-      {
-        'image': 'assets/images/tarihihisset.jpg',
-        'text': 'İZÜ Kampüsü tarihe tanıklık etmiş bir alanda kuruldu. 1892 yılında, II. Abdülhamid döneminde açılışı yapılan Ziraat ve Baytar Mektebi Binası, İZÜ Kampüsüne tarihi bir kimlik kazandırıyor. Öğrenciler, İstiklâl Şairimiz Mehmet Akif’in de önce öğrencilik, sonra hocalık yaptığı koridorları ve yolları arşınlayarak tarihi dokunun gölgesinde eğitim görmenin ayrıcalığını yaşıyor.“Medeniyet değerlerine bağlı olmak” İZÜ’nün olmazsa olmazlarından. Ülkemizin ve insanlığın ihtiyaç duyduğu insani değerlere önem veren İZÜ, kadim medeniyetimizin değerleri olan iyilik, doğruluk, güzel ahlak, yardımlaşma ve tevazuyu, mesleki yetkinlik ile eşzamanlı olarak öğrencilere kazandırmayı hedefliyor. Teorik bilgilerin pratik deneyimlerle bir araya getirildiği bütünsel bir anlayışın hâkim olduğu İZÜ’de farklı eğitim modelleri ön plana çıkıyor.Kronolojik Tarihçe1884 II. Abdülhamid devrinde Ziraat Mektebi Ali’si olarak kuruldu.1889 ‘Mülkiye Baytarı talebeleri’ öğrenime başladı.1892 Resmi açılışı yapıldı.1893 Okul ilk mezunlarını verdi.1895 Halkalı Ziraat Mekteb-i Ali’si adıyla ilk mezunlarını verdi.1914 I. Dünya Savaşında Halkalı Ziraat Mektebi’nde de derslere ara verildi. Öğretmen ve öğrencilerin büyük çoğunluğu cepheye koştu. Öğrencilerin çoğu gazi ya da şehit oldu.1916 Savaş içerisinde zirai üretim, tohum muayenesi ve dağıtım gibi konularda duyulan ihtiyaç üzerine okul yeniden açıldı.1928 Islah-ı Tedrisat Kanunu ile okul kapatıldı.1930 Halkalı Ziraat Mektebi adı ile 3 yıl süreli orta dereceli meslek okulu olarak yeniden öğretime açıldı.1980 Öğretim süresi 4 yıla çıkartıldı.2005 Okul kapatılıp yerine Halkalı Zirai Üretim İşletmesi Tarımsal Yayım ve Hizmet İçi Eğitim Merkezi Müdürlüğü kuruldu.2010 İstanbul Sabahattin Zaim Üniversitesi kuruldu.',
-      },
-    ];
-
-    if (index < 0 || index >= cardData.length) return SizedBox.shrink();
-
-    String text = cardData[index]['text']!;
-    String shortText = text.length > 300 ? text.substring(0, 280) + '...' : text;
-    String imagePath = cardData[index]['image']!;
-
-    return Container(
-      width: 220,
-      height: 320,
-      margin: EdgeInsets.only(right: 16, top: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 6,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image.asset(
-                cardData[index]['image']!,
-                width: 220,
+      child: Container(
+        width: 260,
+        margin: const EdgeInsets.only(right: 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              child: Image.network(
+                resimUrl,
                 height: 120,
+                width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
-          ),
-          SizedBox(height: 10),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Container(
-              height: 180,
-              width: double.infinity,
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(18),
-              ),
+            Padding(
+              padding: const EdgeInsets.all(12),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    shortText,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      height: 1.6,
+                    baslik,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                    textAlign: TextAlign.justify,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  if (text.length > 50)
-                    TextButton(
-                      onPressed: () {
-                        _showFullTextDialog(context, text, imagePath);
-                      },
-                      child: Text(
-                        "Devamını Gör",
-                        style: TextStyle(color: Colors.blue, fontSize: 14),
-                      ),
+                  const SizedBox(height: 8),
+                  Text(
+                    icerik,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey,
                     ),
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  void _showFullTextDialog(BuildContext context, String text, String imagePath) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  text,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("Kapat"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-
-  Widget menuButton(IconData icon, String title, BuildContext context, Widget? page) {
-    return Expanded(
-      child: ElevatedButton(
-        onPressed: () {
-          if (page != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => page),
-            );
-          }
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          elevation: 4,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: Colors.black, size: 35),
-            SizedBox(height: 10),
-            AutoSizeText(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black, fontSize: 10),
-              maxLines: 2,
-              minFontSize: 10,
-            ),
           ],
         ),
       ),
     );
   }
+
 }
