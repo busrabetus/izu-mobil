@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/screens/homepage.dart';
-import 'package:izukbs/services/url_launcher_services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Login_Page extends StatefulWidget {
   const Login_Page({super.key});
@@ -97,19 +95,6 @@ class _Login_pageState extends State<Login_Page> {
                       ),
                       SizedBox(
                         height: 25,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          launchUrlService('https://portal.izu.edu.tr/ForgotPassword');
-                        },
-                        child: Text(
-                          'Parolamı Unuttum (Forgot password)',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF8B2231),
-                          ),
-                        ),
                       ),
 
                       SizedBox(

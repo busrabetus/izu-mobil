@@ -47,16 +47,6 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
       drawer: drawer(),
       body: Stack(
         children: [
-          Align(
-            alignment: Alignment.center,
-            child: Image.asset(
-              'assets/images/circles.png',
-              width: 400,
-              height: 400,
-              fit: BoxFit.cover,
-            ),
-          ),
-
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
