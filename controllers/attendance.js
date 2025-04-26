@@ -4,7 +4,7 @@ const db = require("../config/db"); // Veritabanı bağlantısı
 // Tüm dersler için devamsızlık özeti
 exports.getAttendanceSummary = (req, res) => {
     const user_id = req.user.user_id;
-    const term_id = req.query.term_id; // frontend GET parametresinden geliyor varsayalım
+    const term_id = req.query.term_id; 
     
     if (!term_id) {
         return res.status(400).json({ error: "term_id parametresi eksik" });
