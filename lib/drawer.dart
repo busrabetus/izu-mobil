@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:izukbs/screens/acildurumtelno.dart';
 import 'package:izukbs/screens/login_page.dart';
 import 'package:izukbs/screens/basvuruformlari.dart';
 import 'package:izukbs/screens/sinavsonuclari.dart';
@@ -48,16 +47,7 @@ class _drawerState extends State<drawer> {
               );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.phone),
-            title: Text('Acil Durum İletişim Telefonu'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => acildurumtelno()),
-              );
-            },
-          ),
+
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Öğrenci Bilgileri'),
