@@ -63,15 +63,6 @@ class _basvuruformlariState extends State<basvuruformlari> {
       drawer: drawer(),
       body: Stack(
         children: [
-          Align(
-            alignment: Alignment.center,
-            child: Image.asset(
-              'assets/images/circles.png',
-              width: 400,
-              height: 400,
-              fit: BoxFit.cover,
-            ),
-          ),
           SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(

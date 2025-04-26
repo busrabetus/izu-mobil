@@ -46,15 +46,7 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
         drawer: drawer(),
         body: Stack(
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  'assets/images/circles.png',
-                  width: 400,
-                  height: 400,
-                  fit: BoxFit.cover,
-                ),
-              ),
+
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                   child: Column(
