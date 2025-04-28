@@ -30,7 +30,7 @@ JOIN classgroup_time cg_time ON cg.group_id = cg_time.group_id
 JOIN classroom r ON cg.room_id = r.room_id
 JOIN buildings b ON r.building_id = b.building_id
 WHERE u.user_id = ?
-AND t.term_id = ?
+AND cg.term_id = ?
 ORDER BY cg_time.start_time;
     `;
 
