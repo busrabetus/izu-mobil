@@ -1,8 +1,9 @@
 // 📌 Kullanıcı Kayıt (Register)
+const bcrypt = require("bcrypt");
 require("dotenv").config({ path: "./.env" });
 const jwt = require("jsonwebtoken");
 const db = require("../config/db");
-const bcrypt = require("bcrypt");
+
 
 
 exports.register = async (req, res) => {
@@ -47,6 +48,8 @@ exports.register = async (req, res) => {
 
 
 // 📌 Kullanıcı Girişi (Login)
+
+
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
@@ -60,23 +63,27 @@ exports.login = (req, res) => {
 
         const user = results[0];
 
-        
-        if (password !== user.passwordhash) {
-            return res.status(401).json({ message: "Geçersiz şifre!" });
-        }
+       
+        bcrypt.compare(password, user.passwordhash, (err, isMatch) => {
+            if (err) return res.status(500).json({ error: err.message });
 
-        
-        const token = jwt.sign(
-            { user_id: user.user_id, username: user.username },
-            process.env.JWT_SECRET,
-            { expiresIn: "1h" } 
-        );
+            if (!isMatch) {
+                return res.status(401).json({ message: "Geçersiz şifre!" });
+            }
 
-        res.status(200).json({ 
-            message: "Giriş başarılı!", 
-            token,
-            user_id: user.user_id,
-            username: user.username 
+            
+            const token = jwt.sign(
+                { user_id: user.user_id, username: user.username },
+                process.env.JWT_SECRET,
+                { expiresIn: "1h" } 
+            );
+
+            res.status(200).json({ 
+                message: "Giriş başarılı!", 
+                token,
+                user_id: user.user_id,
+                username: user.username 
+            });
         });
     });
 };

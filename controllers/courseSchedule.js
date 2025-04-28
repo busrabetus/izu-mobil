@@ -11,7 +11,7 @@ exports.getSchedule = (req, res) => {
     }
 
     const query = `
-        SELECT 
+        SELECT DISTINCT
     c.class_name AS ders_adi,
     c.class_code AS ders_kodu,
     cg_time.day AS gun,

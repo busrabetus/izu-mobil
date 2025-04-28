@@ -6,22 +6,23 @@ exports.getExamResults = (req, res) => {
     const term_id = req.query.term_id;
 
     const query = `
-    SELECT 
+    SELECT DISTINCT
     cls.class_name AS ders_adi,
     ex.exam_type AS sinav_turu,
     g.score AS puan,
     g.percentage AS yuzdelik
 FROM user u
-JOIN student s         ON u.user_id = s.user_id
-JOIN enrollments e     ON s.student_id = e.student_id
-JOIN exam ex           ON e.enro_id = ex.enro_id
-JOIN grades g          ON ex.grade_id = g.grade_id
-JOIN classgroup cg     ON ex.group_id = cg.group_id
-JOIN classes cls       ON cg.class_id = cls.class_id
-JOIN term_stud ts      ON s.student_id = ts.student_id
+JOIN student s ON u.user_id = s.user_id
+JOIN enrollments e ON s.student_id = e.student_id
+JOIN exam ex ON e.enro_id = ex.enro_id
+JOIN grades g ON ex.grade_id = g.grade_id
+JOIN classgroup cg ON ex.group_id = cg.group_id
+JOIN classes cls ON cg.class_id = cls.class_id
+JOIN term_stud ts ON s.student_id = ts.student_id
 WHERE u.user_id = ?
   AND ts.term_id = ?
 ORDER BY cls.class_name, ex.exam_type;
+
 
     `;
     
