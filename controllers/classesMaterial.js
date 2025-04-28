@@ -6,7 +6,7 @@ exports.getClassesMaterial = (req, res) => {
     const term_id = req.query.term_id;
 
     const query = `
-    SELECT 
+    SELECT DISTINCT
     c.class_code AS ders_kodu,
     c.class_name AS ders_adi,
     CONCAT(a.ac_name, ' ', a.ac_surname) AS hoca

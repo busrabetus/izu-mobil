@@ -6,7 +6,7 @@ exports.getExamSchedule = (req, res) => {
     const term_id = req.query.term_id;
 
     const query = `
-    SELECT
+    SELECT DISTINCT
     cls.class_name AS ders_adi,
     ex.exam_type AS sinav_turu,
     ex.date AS sinav_tarihi,
@@ -18,13 +18,15 @@ JOIN student s ON u.user_id = s.user_id
 JOIN term_stud ts ON s.student_id = ts.student_id
 JOIN term t ON ts.term_id = t.term_id
 JOIN enrollments e ON s.student_id = e.student_id
-JOIN exam ex ON e.enro_id = ex.enro_id
-JOIN classgroup cg ON ex.group_id = cg.group_id
+JOIN classgroup cg ON e.group_id = cg.group_id
+JOIN exam ex ON cg.group_id = ex.group_id  -- BURADA DÜZELTTİM!
 JOIN classes cls ON cg.class_id = cls.class_id
 JOIN classroom cr ON ex.room_id = cr.room_id
 JOIN buildings b ON cr.building_id = b.building_id
-WHERE u.user_id = ? AND t.term_id = ?
+WHERE u.user_id = ? 
+  AND t.term_id = ?
 ORDER BY ex.date, ex.start_time;
+
     `;
     
     db.query(query, [user_id, term_id], (err, results) => {

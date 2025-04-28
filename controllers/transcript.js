@@ -8,20 +8,17 @@ exports.getTranscript = (req, res) => {
     const query = `
     WITH ogrenci_donemleri AS (
     SELECT 
-        u.user_id,
+        s.student_id,
         t.term_id,
         t.term_name,
-        t.term_start,
-        t.term_end,
         ROW_NUMBER() OVER (
-            PARTITION BY u.user_id 
+            PARTITION BY s.student_id
             ORDER BY t.term_start
         ) AS yariyil_no
-    FROM user u
-    JOIN student s    ON u.user_id = s.user_id
+    FROM student s
     JOIN term_stud ts ON s.student_id = ts.student_id
     JOIN term t       ON ts.term_id = t.term_id
-    WHERE u.user_id = ?
+    WHERE s.user_id = 1  -- Bu user_id ile öğrenciye ait student_id'yi buluyoruz
       AND t.term_name NOT LIKE '%Yaz%'
 )
 
@@ -32,14 +29,12 @@ SELECT
     c.class_credit    AS akts,
     e.letter_grade    AS harf_notu
 FROM ogrenci_donemleri od
-JOIN term_stud ts    ON ts.term_id = od.term_id
-JOIN student s       ON ts.student_id = s.student_id
-JOIN enrollments e   ON s.student_id = e.student_id
+JOIN enrollments e   ON od.student_id = e.student_id
 JOIN classgroup cg   ON e.group_id = cg.group_id
 JOIN classes c       ON cg.class_id = c.class_id
-WHERE od.user_id = ?
-  AND e.enro_date BETWEEN od.term_start AND od.term_end
+WHERE od.student_id = (SELECT student_id FROM student WHERE user_id = 1)
 ORDER BY od.yariyil_no, c.class_name;
+
 
 
     `;
