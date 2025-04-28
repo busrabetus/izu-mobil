@@ -20,7 +20,7 @@ JOIN classgroup cg ON ex.group_id = cg.group_id
 JOIN classes cls ON cg.class_id = cls.class_id
 JOIN term_stud ts ON s.student_id = ts.student_id
 WHERE u.user_id = ?
-  AND ts.term_id = ?
+  AND cg.term_id = ?
 ORDER BY cls.class_name, ex.exam_type;
 
 

@@ -24,7 +24,7 @@ JOIN classes cls ON cg.class_id = cls.class_id
 JOIN classroom cr ON ex.room_id = cr.room_id
 JOIN buildings b ON cr.building_id = b.building_id
 WHERE u.user_id = ? 
-  AND t.term_id = ?
+  AND cg.term_id = ?
 ORDER BY ex.date, ex.start_time;
 
     `;
