@@ -12,14 +12,14 @@ exports.getInfoStudent = (req, res) => {
         s.student_id,
         sp.prog_id,
         ROUND(SUM(
-            CASE
-                WHEN g.score = 100 THEN 4.0
-                WHEN g.score >= 85 THEN 3.5
-                WHEN g.score >= 80 THEN 3.0
-                WHEN g.score >= 75 THEN 2.5
-                WHEN g.score >= 70 THEN 2.0
-                WHEN g.score >= 65 THEN 1.5
-                WHEN g.score >= 60 THEN 1.0
+            CASE e.letter_grade
+                WHEN 'AA' THEN 4.0
+                WHEN 'BA' THEN 3.5
+                WHEN 'BB' THEN 3.0
+                WHEN 'CB' THEN 2.5
+                WHEN 'CC' THEN 2.0
+                WHEN 'DC' THEN 1.5
+                WHEN 'DD' THEN 1.0
                 ELSE 0.0
             END * c.class_credit
         ) / SUM(c.class_credit), 2) AS agno
@@ -28,8 +28,7 @@ exports.getInfoStudent = (req, res) => {
     JOIN enrollments e ON s.student_id = e.student_id
     JOIN classgroup cg ON e.group_id = cg.group_id
     JOIN classes c ON cg.class_id = c.class_id
-    JOIN grade_class gc ON gc.enro_id = e.enro_id
-    JOIN grades g ON gc.grade_id = g.grade_id
+    WHERE e.enro_status IN ('Aktif', 'Mezun')
     GROUP BY s.student_id, sp.prog_id
 ),
 ranked AS (
