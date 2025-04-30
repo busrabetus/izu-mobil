@@ -6,7 +6,7 @@ exports.getClassesMaterial = (req, res) => {
     const term_id = req.query.term_id;
 
     const query = `
-    SELECT 
+    SELECT DISTINCT
     c.class_code AS ders_kodu,
     c.class_name AS ders_adi,
     CONCAT(a.ac_name, ' ', a.ac_surname) AS hoca
@@ -18,9 +18,10 @@ JOIN enrollments e ON s.student_id = e.student_id
 JOIN classgroup cg ON e.group_id = cg.group_id
 JOIN classes c ON cg.class_id = c.class_id
 JOIN academician a ON cg.ac_id = a.ac_id
-WHERE u.user_id = ? 
-  AND t.term_id = ?
+WHERE u.user_id = ?
+  AND cg.term_id = ?
 ORDER BY c.class_name;
+
     `;
     
     db.query(query, [user_id, term_id], (err, results) => {
