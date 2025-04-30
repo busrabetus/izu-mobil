@@ -8,20 +8,20 @@ const db = require("../config/db");
 
 exports.register = async (req, res) => {
     const { username, password } = req.body;
-    
-    
-    
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
 
-    const registeredDate = new Date().toISOString().split("T")[0]; 
+
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+
+    const registeredDate = new Date().toISOString().split("T")[0];
 
     if (!username || !password) {
         return res.status(400).json({ error: "Kullanıcı adı ve şifre gereklidir." });
     }
-    
+
     const sql = `
-        INSERT INTO user (username, passwordhash, verified, active, registered) 
+        INSERT INTO user (username, passwordhash, verified, active, registered)
         VALUES (?, ?, ?, ?, ?);
     `;
 
@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
             return res.status(500).json({ error: err.message });
         }
 
-        
+
         const token = jwt.sign({ user_id: result.insertId, username }, process.env.JWT_SECRET, {
             expiresIn: "1h",
         });
@@ -63,7 +63,7 @@ exports.login = (req, res) => {
 
         const user = results[0];
 
-       
+        // Düz şifreyi bcrypt ile hash'leyip karşılaştırma
         bcrypt.compare(password, user.passwordhash, (err, isMatch) => {
             if (err) return res.status(500).json({ error: err.message });
 
@@ -71,22 +71,22 @@ exports.login = (req, res) => {
                 return res.status(401).json({ message: "Geçersiz şifre!" });
             }
 
-            
             const token = jwt.sign(
                 { user_id: user.user_id, username: user.username },
                 process.env.JWT_SECRET,
-                { expiresIn: "1h" } 
+                { expiresIn: "1h" }
             );
 
-            res.status(200).json({ 
-                message: "Giriş başarılı!", 
+            res.status(200).json({
+                message: "Giriş başarılı!",
                 token,
                 user_id: user.user_id,
-                username: user.username 
+                username: user.username
             });
         });
     });
 };
+
 
 exports.logout = (req, res) => {
     

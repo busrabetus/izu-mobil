@@ -1,0 +1,2 @@
+/Users/busrabetulposlu/StudioProjects/izumobil/android/app/.cxx/Debug/z5o6l6u3/x86_64/CMakeFiles/edit_cache.dir
+/Users/busrabetulposlu/StudioProjects/izumobil/android/app/.cxx/Debug/z5o6l6u3/x86_64/CMakeFiles/rebuild_cache.dir

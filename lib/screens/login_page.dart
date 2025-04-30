@@ -1,5 +1,38 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:izukbs/screens/homepage.dart';
+Future<void> login(String username, String password, BuildContext context) async {
+  try {
+    // API URL'nizi buraya girin
+    final url = Uri.parse("http://10.0.2.2:3000/api/user/login");
+    final response = await http.post(
+      url,
+      body: json.encode({
+        'email': username,
+        'password': password,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      // Giriş başarılı, token alındı veya başka bir veri döndü
+      var data = json.decode(response.body);
+      // Örneğin token'ı localStorage veya sessionStorage’a kaydedebilirsiniz
+      // Sonra kullanıcıyı AnaSayfa'ya yönlendir
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AnaSayfa()),
+      );
+    } else {
+      // Hata mesajı göster
+      throw Exception('Giriş başarısız');
+    }
+  } catch (e) {
+    print("Hata: $e");
+    // Hata durumunda bir mesaj gösterilebilir
+  }
+}
 
 class Login_Page extends StatefulWidget {
   const Login_Page({super.key});
@@ -24,7 +57,7 @@ class _Login_pageState extends State<Login_Page> {
               width: 175,
               height: 175,
               decoration: BoxDecoration(
-                color: Color(0xFF8B2231).withValues(),
+                color: Color(0xFF8B2231).withOpacity(0.7),
                 shape: BoxShape.circle,
               ),
             ),
@@ -101,23 +134,40 @@ class _Login_pageState extends State<Login_Page> {
                         height: 50,
                       ),
                       ElevatedButton(
-                          onPressed: () {
+                        onPressed: () async {
+                          final response = await http.post(
+                            Uri.parse('http://10.0.2.2:3000/api/user/login'), // Android emülatör için IP böyle olmalı
+                            headers: {'Content-Type': 'application/json'},
+                            body: jsonEncode({
+                              'email': usernamecontroller.text,
+                              'password': passwordcontroller.text,
+                            }),
+                          );
+
+                          if (response.statusCode == 200) {
+                            // Giriş başarılı, yönlendirme yap
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AnaSayfa()),
+                              MaterialPageRoute(builder: (context) => const AnaSayfa()),
                             );
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFF8B2231),
-                              foregroundColor: Colors.white,
-                              minimumSize: Size(double.infinity, 50),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              )),
-                          child: Text("Giriş - Sign In")),
-                      SizedBox(
-                        height: 25,
+                          } else {
+                            // Hata mesajını göster
+                            var errorData = json.decode(response.body);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(errorData['message'] ?? 'Hatalı giriş')),
+                            );
+                          }
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF8B2231),
+                          foregroundColor: Colors.white,
+                          minimumSize: Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text("Giriş - Sign In"),
                       ),
                     ],
                   ),
