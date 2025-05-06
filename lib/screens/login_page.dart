@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:izukbs/screens/homepage.dart';
+import 'package:izukbs/services/token_service.dart';
+
 Future<void> login(String username, String password, BuildContext context) async {
   try {
-    // API URL'nizi buraya girin
     final url = Uri.parse("http://10.0.2.2:3000/api/user/login");
     final response = await http.post(
       url,
@@ -16,21 +17,28 @@ Future<void> login(String username, String password, BuildContext context) async
     );
 
     if (response.statusCode == 200) {
-      // Giriş başarılı, token alındı veya başka bir veri döndü
       var data = json.decode(response.body);
-      // Örneğin token'ı localStorage veya sessionStorage’a kaydedebilirsiniz
-      // Sonra kullanıcıyı AnaSayfa'ya yönlendir
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const AnaSayfa()),
-      );
+      final token = data['token'];
+
+      print("TOKEN: $token");
+
+      if (token != null) {
+        await AuthService.saveToken(token);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const AnaSayfa()),
+        );
+      } else {
+        throw Exception('Token sunucudan alınamadı.');
+      }
     } else {
-      // Hata mesajı göster
       throw Exception('Giriş başarısız');
     }
   } catch (e) {
     print("Hata: $e");
-    // Hata durumunda bir mesaj gösterilebilir
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Giriş hatası: $e")),
+    );
   }
 }
 
@@ -135,40 +143,29 @@ class _Login_pageState extends State<Login_Page> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          final response = await http.post(
-                            Uri.parse('http://10.0.2.2:3000/api/user/login'), // Android emülatör için IP böyle olmalı
-                            headers: {'Content-Type': 'application/json'},
-                            body: jsonEncode({
-                              'email': usernamecontroller.text,
-                              'password': passwordcontroller.text,
-                            }),
-                          );
+                          final username = usernamecontroller.text.trim();
+                          final password = passwordcontroller.text.trim();
 
-                          if (response.statusCode == 200) {
-                            // Giriş başarılı, yönlendirme yap
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const AnaSayfa()),
-                            );
-                          } else {
-                            // Hata mesajını göster
-                            var errorData = json.decode(response.body);
+                          if (username.isEmpty || password.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(errorData['message'] ?? 'Hatalı giriş')),
+                              const SnackBar(content: Text("Lütfen tüm alanları doldurun.")),
                             );
+                            return;
                           }
 
+                          await login(username, password, context);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF8B2231),
+                          backgroundColor: const Color(0xFF8B2231),
                           foregroundColor: Colors.white,
-                          minimumSize: Size(double.infinity, 50),
+                          minimumSize: const Size(double.infinity, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Text("Giriş - Sign In"),
-                      ),
+                        child: const Text("Giriş - Sign In"),
+                      )
+
                     ],
                   ),
                 ),

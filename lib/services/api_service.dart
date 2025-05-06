@@ -1,29 +1,30 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import '../models/StudentInfo.dart';
+import 'token_service.dart';
 
 class ApiService {
-  static const String baseUrl = "https://okulsistemi-api.vercel.app/api"; //buraya saitin verecegi adres gelecek
+  final String baseUrl = 'http://10.0.2.2:3000';
 
-  // ogrencinin aldığı dersleri getiriyor
-  static Future<List<dynamic>> getDersler() async {
-    final response = await http.get(Uri.parse("$baseUrl/dersler"));
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body); // JSON array döner
-    } else {
-      throw Exception("Dersler yüklenemedi");
+  Future<StudentInfo> getHomepageData() async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception("Token bulunamadı, kullanıcı giriş yapmamış.");
     }
-  }
 
-  // öğrenci bilgilerini getiriyor
-  static Future<Map<String, dynamic>> getOgrenci(String ogrenciId) async {
-    final response = await http.get(Uri.parse("$baseUrl/ogrenci/$ogrenciId"));
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/homepage'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      final data = jsonDecode(response.body);
+      return StudentInfo.fromJson(data);
     } else {
-      throw Exception("Öğrenci bilgisi yüklenemedi");
+      throw Exception("Öğrenci bilgileri getirilemedi: ${response.body}");
     }
   }
 }

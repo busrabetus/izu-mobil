@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:izukbs/screens/dersprogrami.dart';
 import 'package:izukbs/screens/devamsizlikdurumu.dart';
 import 'package:izukbs/screens/ogrencibilgileri.dart';
 import 'package:izukbs/screens/sinavsonuclari.dart';
 import 'package:izukbs/screens/sinavtakvimi.dart';
 import 'package:izukbs/screens/transkript.dart';
+import 'package:izukbs/services/api_service.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../drawer.dart';
+import 'package:izukbs/services/token_service.dart';
+import 'package:izukbs/models/StudentInfo.dart';
+
 
 class AnaSayfa extends StatefulWidget {
   const AnaSayfa({super.key});
@@ -16,6 +21,30 @@ class AnaSayfa extends StatefulWidget {
 }
 
 class _AnaSayfaState extends State<AnaSayfa> {
+  final ApiService _apiService = ApiService();
+  StudentInfo? student;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchOgrenciBilgileri();
+  }
+
+  Future<void> _fetchOgrenciBilgileri() async {
+    try {
+      final studentInfo = await _apiService.getHomepageData();
+      setState(() {
+        student = studentInfo;
+      });
+    } catch (e) {
+      print('Hata: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Öğrenci bilgileri alınamadı: $e')),
+      );
+    }
+  }
+
+
   final List<Map<String, String>> duyurular = [
     {
       'baslik': 'Yaz Dönemi Kayıtları Başladı',
@@ -82,36 +111,36 @@ class _AnaSayfaState extends State<AnaSayfa> {
                         child: Icon(Icons.person, size: 40, color: Colors.white),
                       ),
                       const SizedBox(height: 15),
-                      const Text(
-                        "Ayşe Yılmaz",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      Text(
+                        student?.ad.isNotEmpty == true ? student!.ad : "Yükleniyor...",
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
-                      const Text(
-                        "030722000",
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      Text(
+                        student?.studentId.isNotEmpty == true ? student!.studentId : "Yükleniyor...",
+                        style: const TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        "Mühendislik ve Doğa Bilimleri Fakültesi",
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      Text(
+                        student?.fakulte.isNotEmpty == true ? student!.fakulte : "Yükleniyor...",
+                        style: const TextStyle(fontSize: 15, color: Colors.grey),
                         textAlign: TextAlign.center,
                       ),
-                      const Text(
-                        "Yazılım Mühendisliği",
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      Text(
+                        student?.bolum.isNotEmpty == true ? student!.bolum : "Yükleniyor...",
+                        style: const TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                       const Divider(thickness: 1, height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          const Text(
-                            "3. Sınıf",
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          Text(
+                            student?.sinif.isNotEmpty == true ? "${student!.sinif}. Sınıf" : "Yükleniyor...",
+                            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
-                          const Text(
-                            "AGNO: 3.31",
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          Text(
+                            student?.agno.isNotEmpty == true ? "AGNO: ${student!.agno}" : "Yükleniyor...",
+                            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
