@@ -4,10 +4,10 @@ const db = require("../config/db"); // Veritabanı bağlantısı
 
 exports.getHomePage = (req, res) => {
     const user_id = req.user.user_id;
-    
-    
+
+
     const query = `
-        SELECT 
+        SELECT
     s.student_id,
     CONCAT(s.name, ' ', s.surname) AS student_name,
     f.fac_name,
@@ -37,16 +37,16 @@ JOIN faculty f ON f.fac_id = p.fac_id
 WHERE s.user_id = ?
 GROUP BY s.student_id, s.name, f.fac_name, p.prog_name;
 `;
-    
+
     db.query(query, [user_id], (err, results) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        
+
         if (results.length === 0) {
             return res.status(404).json({ message: "Öğrenci bilgileri bulunamadı" });
         }
-        
+
         res.status(200).json(results[0]);
     });
 };
