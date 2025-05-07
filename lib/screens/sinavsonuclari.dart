@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
-import '../term_dropdownbutton.dart';
-import 'package:izukbs/widgets/custom_appbar.dart';
+import '../widgets/custom_appbar.dart';
+import '../services/api_service.dart';
+import '../models/exam_results.dart';
 
 class sinavsonuclari extends StatefulWidget {
   const sinavsonuclari({super.key});
@@ -11,94 +12,143 @@ class sinavsonuclari extends StatefulWidget {
 }
 
 class _sinavsonuclariState extends State<sinavsonuclari> {
-  late String selectedTerm;
+  final ApiService apiService = ApiService();
+  String selectedTerm = "10"; // Varsayılan term_id
+  bool isLoading = false;
 
-  final Map<String, List<Map<String, String>>> sinavSonuclari = {
-    "2023-2024 Bahar": [
-      {"ders": "Algoritma Analizi", "vize": "70", "final": "50", "harf": "CC"},
-      {"ders": "Web Tabanlı Programlama", "vize": "95","final": "100", "harf": "AA"},
-      {"ders": "Grafik Programlama", "vize": "80","final": "100", "harf": "AA"},
-      {"ders": "Diferansiyel Denklemler", "vize": "87","final": "73", "harf": "BA"},
-    ],
-    "2024-2025 Güz": [
-      {"ders": "İşletim Sistemleri", "vize": "88","final": "100", "harf": "AA"},
-      {"ders": "Linux Sistem Yönetimi", "vize": "92","final": "90", "harf": "AA"},
-      {"ders": "Yazılım Mimarisi", "vize": "80","final": "90", "harf": "BA"},
-    ],
-    "2024-2025 Bahar": [
-      {"ders": "Sistem Analizi ve Tasarımı", "vize": "85", "final": "90", "harf": "BA"},
-      {"ders": "Görüntü İşleme", "vize": "78","final": "80", "harf": "CB"},
-      {"ders": "3D Modelleme ve Animasyon", "vize": "90","final": "100", "harf": "AA"},
-      {"ders": "3D Modelleme ve Animasyon", "vize": "90","final": "100", "harf": "AA"},
-    ],
+  List<ExamResult> rawResults = [];
+  Map<String, List<ExamResult>> groupedResults = {};
+
+  final Map<String, String> termMap = {
+    "2023-2024 Bahar": "8",
+    "2024-2025 Güz": "10",
+    "2024-2025 Bahar": "11",
   };
 
   @override
   void initState() {
     super.initState();
-    selectedTerm = sinavSonuclari.keys.last;
+    fetchExamResults();
+  }
+
+  Future<void> fetchExamResults() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      rawResults = await apiService.getExamResults(selectedTerm);
+      groupResultsByCourse();
+    } catch (e) {
+      print("Hata: $e");
+      rawResults = [];
+      groupedResults = {};
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void groupResultsByCourse() {
+    groupedResults.clear();
+
+    for (var result in rawResults) {
+      String dersAdi = result.dersAdi;
+      if (!groupedResults.containsKey(dersAdi)) {
+        groupedResults[dersAdi] = [];
+      }
+      groupedResults[dersAdi]!.add(result);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF0F0F0),
       appBar: const CustomAppBar(title: "Sınav Sonuçları"),
       drawer: drawer(),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Dönem Seçiniz",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 8),
-                TermDropdown(
-                  terms: sinavSonuclari.keys.toList(),
-                  selectedTerm: selectedTerm,
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedTerm = newValue;
-                    });
-                  },
-                ),
-                SizedBox(height: 20),
-                Text(
-                  "Sınav Sonuçları:",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: sinavSonuclari[selectedTerm]?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      var result = sinavSonuclari[selectedTerm]![index];
-                      return Card(
-                        child: ListTile(
-                          title: Text(result["ders"]!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Vize: ${result["vize"]}"),
-                              Text("Final: ${result["final"]}"),
-                            ],
-                          ),
-                          trailing: Text(
-                            result["harf"]!,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+      backgroundColor: const Color(0xFFF0F0F0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Dönem Seçiniz",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            DropdownButton<String>(
+              value: selectedTerm,
+              isExpanded: true,
+              items: termMap.entries.map((entry) {
+                return DropdownMenuItem<String>(
+                  value: entry.value,
+                  child: Text(entry.key),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                if (newValue != null) {
+                  setState(() {
+                    selectedTerm = newValue;
+                  });
+                  fetchExamResults();
+                }
+              },
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Sınav Sonuçları:",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : groupedResults.isEmpty
+                  ? const Center(child: Text("Sonuç bulunamadı."))
+                  : ListView.builder(
+                itemCount: groupedResults.length,
+                itemBuilder: (context, index) {
+                  String dersAdi = groupedResults.keys.elementAt(index);
+                  List<ExamResult> sinavlar = groupedResults[dersAdi]!;
+
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            dersAdi,
+                            style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          ...sinavlar.map((sinav) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Sınav: ${sinav.sinavTuru}"),
+                                  Text("Puan: ${sinav.puan}  |  %${sinav.yuzdelik}"),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
