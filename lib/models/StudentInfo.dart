@@ -1,31 +1,28 @@
 class StudentInfo {
-  final String studentId;
-  final String classId;
   final String ad;
+  final String numara;
   final String fakulte;
   final String bolum;
-  final String sinif;
   final String agno;
+  final String level;
 
   StudentInfo({
-    required this.studentId,
-    required this.classId,
     required this.ad,
+    required this.numara,
     required this.fakulte,
     required this.bolum,
-    required this.sinif,
     required this.agno,
+    required this.level,
   });
 
   factory StudentInfo.fromJson(Map<String, dynamic> json) {
     return StudentInfo(
-      studentId: json['student_id']?.toString() ?? '',
-      classId: json['class_id']?.toString() ?? '',
       ad: json['student_name'] ?? '',
+      numara: json['student_id']?.toString() ?? '',
       fakulte: json['fac_name'] ?? '',
       bolum: json['prog_name'] ?? '',
-      sinif: json['sinif']?.toString() ?? '',
       agno: json['agno']?.toString() ?? '',
+      level: json['level']?.toString() ?? '',
     );
   }
 }
