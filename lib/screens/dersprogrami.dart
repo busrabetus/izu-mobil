@@ -3,6 +3,9 @@ import 'package:izukbs/drawer.dart';
 import 'package:izukbs/term_dropdownbutton.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 
+import '../models/course_schedule.dart';
+import '../services/api_service.dart';
+
 class DersProgrami extends StatefulWidget {
   const DersProgrami({super.key});
 
@@ -11,7 +14,23 @@ class DersProgrami extends StatefulWidget {
 }
 
 class _DersProgramiState extends State<DersProgrami> {
+  final Map<String, int> termMap = {
+    '2024-2025 Güz': 10,
+    '2024-2025 Bahar': 11,
+  };
+
+  final List<String> gunSirasi = [
+    'Pazartesi',
+    'Salı',
+    'Çarşamba',
+    'Perşembe',
+    'Cuma',
+    'Cumartesi',
+  ];
+
+
   String selectedTerm = '2024-2025 Bahar';
+
   final Map<String, Color> dayColors = {
     'Pazartesi': Color(0xFF8B2231),
     'Salı': Color(0xFF2E7D32),
@@ -21,42 +40,47 @@ class _DersProgramiState extends State<DersProgrami> {
     'Cumartesi': Color(0xFF00838F),
   };
 
-  final Map<String, Map<String, List<Map<String, String>>>> dersProgrami = {
-    '2024-2025 Bahar': {
-      'Pazartesi': [
-        {'saat': '09:00 - 10:30', 'ders': 'Matematik', 'derslik': 'EGC-16'},
-        {'saat': '11:00 - 12:30', 'ders': 'Fizik', 'derslik': 'EGC-16'},
-      ],
-      'Salı': [
-        {'saat': '10:00 - 11:30', 'ders': 'Kimya', 'derslik': 'EGC-16'},
-        {'saat': '14:00 - 15:30', 'ders': 'Biyoloji', 'derslik': 'EGC-16'},
-      ],
-      'Çarşamba': [
-        {'saat': '09:00 - 10:30', 'ders': 'Tarih', 'derslik': 'EGC-16'},
-        {'saat': '13:00 - 14:30', 'ders': 'Coğrafya', 'derslik': 'EGC-16'},
-      ],
-      'Perşembe': [
-        {'saat': '08:30 - 10:00', 'ders': 'İngilizce', 'derslik': 'EGC-16'},
-        {'saat': '15:00 - 16:30', 'ders': 'Edebiyat', 'derslik': 'EGC-16'},
-      ],
-      'Cuma': [
-        {'saat': '10:00 - 11:30', 'ders': 'Beden Eğitimi', 'derslik': 'Spor Salonu'},
-        {'saat': '12:00 - 13:30', 'ders': 'Müzik', 'derslik': 'Müzik Odası'},
-      ],
-      'Cumartesi': [
-        {'saat': '10:00 - 11:30', 'ders': 'Resim', 'derslik': 'Sanat Atölyesi'},
-        {'saat': '12:00 - 13:30', 'ders': 'Bilgisayar', 'derslik': 'Bilgisayar Lab'},
-      ],
-    },
-    '2024-2025 Güz': {
-      'Pazartesi': [
-        {'saat': '10:00 - 11:30', 'ders': 'Veri Yapıları', 'derslik': 'EGC-16'},
-      ],
-      'Çarşamba': [
-        {'saat': '14:00 - 15:30', 'ders': 'Programlamaya Giriş', 'derslik': 'EGC-16'},
-      ],
-    },
-  };
+  Map<String, List<Map<String, String>>> dersProgramiByGun = {};
+
+  List<CourseSchedule> dersProgrami = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProgram(termMap[selectedTerm]!);
+  }
+
+
+  void _fetchProgram(int termId) async {
+    try {
+      final data = await ApiService().getCourseSchedule(termId);
+
+      // Veriyi eski yapıya dönüştür:
+      final Map<String, List<Map<String, String>>> gunluk = {};
+      for (var ders in data) {
+        final gun = ders.gun;
+
+        gunluk.putIfAbsent(gun, () => []).add({
+          'ders': ders.dersAdi,
+          'saat': "${ders.baslangicSaati.substring(0,5)} - ${ders.bitisSaati.substring(0,5)}",
+          'derslik': "${ders.konum} / ${ders.bina}",
+        });
+      }
+
+      setState(() {
+        dersProgrami = data;
+        dersProgramiByGun = gunluk;
+      });
+    } catch (e) {
+      print("Hata: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Ders programı yüklenemedi")),
+      );
+    }
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,14 +127,16 @@ class _DersProgramiState extends State<DersProgrami> {
                         ),
                         SizedBox(height: 10),
                         TermDropdown(
-                          terms: dersProgrami.keys.toList(),
+                          terms: termMap.keys.toList(),
                           selectedTerm: selectedTerm,
                           onChanged: (newValue) {
                             setState(() {
                               selectedTerm = newValue;
                             });
+                            _fetchProgram(termMap[newValue]!);
                           },
                         ),
+
                       ],
                     ),
                   ),
@@ -119,7 +145,9 @@ class _DersProgramiState extends State<DersProgrami> {
                 Expanded(
                   child: ListView(
                     physics: BouncingScrollPhysics(),
-                    children: dersProgrami[selectedTerm]!.keys.map((day) {
+                      children: gunSirasi
+                          .where((gun) => dersProgramiByGun.containsKey(gun))
+                          .map((day) {
                       return Container(
                         margin: EdgeInsets.only(bottom: 14),
                         decoration: BoxDecoration(
@@ -177,12 +205,9 @@ class _DersProgramiState extends State<DersProgrami> {
                               ),
                               children: [
                                 Divider(height: 1, indent: 16, endIndent: 16),
-                                ...dersProgrami[selectedTerm]![day]!.map((lesson) {
+                                ...dersProgramiByGun[day]!.map((lesson) {
                                   return Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16.0,
-                                      vertical: 10,
-                                    ),
+                                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
                                     child: AnimatedContainer(
                                       duration: Duration(milliseconds: 300),
                                       curve: Curves.easeInOut,
@@ -190,27 +215,24 @@ class _DersProgramiState extends State<DersProgrami> {
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
-                                          color: dayColors[day]!.withValues(alpha: 0.2),
+                                          color: dayColors[day]!.withOpacity(0.2),
                                           width: 1,
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: dayColors[day]!.withValues(alpha: 0.05),
+                                            color: dayColors[day]!.withOpacity(0.05),
                                             blurRadius: 4,
                                             offset: Offset(0, 2),
                                           ),
                                         ],
                                       ),
                                       child: ListTile(
-                                        contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 16,
-                                          vertical: 14,
-                                        ),
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                                         leading: Container(
                                           width: 64,
                                           padding: EdgeInsets.all(6),
                                           decoration: BoxDecoration(
-                                            color: dayColors[day]!.withValues(alpha: 0.1),
+                                            color: dayColors[day]!.withOpacity(0.1),
                                             borderRadius: BorderRadius.circular(6),
                                           ),
                                           child: Text(
@@ -234,32 +256,26 @@ class _DersProgramiState extends State<DersProgrami> {
                                         subtitle: Padding(
                                           padding: EdgeInsets.only(top: 6),
                                           child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Icon(
-                                                Icons.location_on,
-                                                size: 16,
-                                                color: Colors.grey[600],
-                                              ),
+                                              Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
                                               SizedBox(width: 6),
-                                              Text(
-                                                lesson['derslik']!,
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.grey[600],
+                                              Expanded( // Bu satır kritik
+                                                child: Text(
+                                                  lesson['derslik']!,
+                                                  style: TextStyle(fontSize: 15, color: Colors.grey[600]),
+                                                  softWrap: true,
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                        trailing: Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 18,
-                                          color: dayColors[day],
-                                        ),
+                                        trailing: Icon(Icons.arrow_forward_ios, size: 18, color: dayColors[day]),
                                       ),
                                     ),
                                   );
                                 }),
+
                                 SizedBox(height: 10),
                               ],
                             ),

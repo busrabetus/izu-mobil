@@ -4,7 +4,7 @@ const db = require("../config/db"); // Veritabanı bağlantısı
 exports.getSchedule = (req, res) => {
     const user_id = req.user.user_id;
     const term_id = req.query.term_id; // Dönem ID'si
-    
+
     
     if (!term_id ) {
         return res.status(400).json({ error: "term_id  parametresi gereklidir." });
