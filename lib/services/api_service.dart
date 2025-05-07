@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import '../models/StudentInfo.dart';
 import '../models/course_schedule.dart';
 import 'token_service.dart';
-
+import 'package:izukbs/models/exam_results.dart';
+//model
 class ApiService {
   final String baseUrl = 'http://10.0.2.2:3000';
 
@@ -49,4 +50,27 @@ class ApiService {
     }
   }
 
+
+
+Future<List<ExamResult>> getExamResults(String termId) async {
+  final token = await AuthService.getToken();
+  if (token == null) {
+    throw Exception("Token bulunamadı, kullanıcı giriş yapmamış.");
+  }
+
+  final response = await http.get(
+    Uri.parse('$baseUrl/api/examResults?term_id=$termId'),
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    List<dynamic> jsonData = jsonDecode(response.body);
+    return jsonData.map((e) => ExamResult.fromJson(e)).toList();
+  } else {
+    throw Exception("Sınav sonuçları alınamadı: ${response.body}");
+  }
+}
 }
