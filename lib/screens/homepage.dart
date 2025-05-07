@@ -117,7 +117,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        student?.studentId.isNotEmpty == true ? student!.studentId : "Yükleniyor...",
+                        student?.numara.isNotEmpty == true ? student!.numara : "Yükleniyor...",
                         style: const TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                       const SizedBox(height: 8),
@@ -135,7 +135,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            student?.sinif.isNotEmpty == true ? "${student!.sinif}. Sınıf" : "Yükleniyor...",
+                            student != null ? "${student!.level}. Sınıf" : "Yükleniyor...",
                             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           Text(
