@@ -1,7 +1,7 @@
 class TranscriptCourse {
   final String donemAdi;
   final String dersAdi;
-  final double akts; // 🔁 String yerine double kullandık
+  final double akts;
   final String harfNotu;
 
   TranscriptCourse({
@@ -15,7 +15,7 @@ class TranscriptCourse {
     return TranscriptCourse(
       donemAdi: json['donem_adi'],
       dersAdi: json['ders_adi'],
-      akts: double.parse(json['akts'].toString()), // 🔁 dönüşüm burada
+      akts: double.tryParse(json['akts'].toString()) ?? 0,
       harfNotu: json['harf_notu'],
     );
   }
