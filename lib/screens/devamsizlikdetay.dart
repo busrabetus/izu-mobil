@@ -1,21 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
+import '../services/api_service.dart';
+import '../models/attendance_detail.dart';
 
-class Devamsizlikdetay extends StatelessWidget {
+class Devamsizlikdetay extends StatefulWidget {
   final String dersAdi;
-  final Map<String, int> detaylar;
+  final int termId;
 
   const Devamsizlikdetay({
     super.key,
     required this.dersAdi,
-    required this.detaylar,
+    required this.termId,
   });
+
+  @override
+  State<Devamsizlikdetay> createState() => _DevamsizlikdetayState();
+}
+
+class _DevamsizlikdetayState extends State<Devamsizlikdetay> {
+  final ApiService apiService = ApiService();
+  late Future<List<AttendanceDetail>> detailFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    detailFuture = apiService.getAttendanceDetail(
+      className: widget.dersAdi,
+      termId: widget.termId,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
-      appBar: CustomAppBar(title: dersAdi),
+      appBar: CustomAppBar(title: widget.dersAdi),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -23,90 +42,104 @@ class Devamsizlikdetay extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             Expanded(
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemCount: detaylar.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  String tarih = detaylar.keys.elementAt(index);
-                  int saat = detaylar[tarih]!;
+              child: FutureBuilder<List<AttendanceDetail>>(
+                future: detailFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("Hata: ${snapshot.error}"));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text("Devamsızlık kaydı bulunamadı"));
+                  }
 
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 6,
-                          spreadRadius: 1,
-                          offset: const Offset(0, 3),
-                        )
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.calendar_today,
-                                color: Colors.blue,
-                                size: 24,
+                  final detaylar = snapshot.data!;
+                  return ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: detaylar.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final detay = detaylar[index];
+                      final int saat = detay.toplamSaati - detay.katilimSaati;
+
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 6,
+                              spreadRadius: 1,
+                              offset: const Offset(0, 3),
+                            )
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.calendar_today,
+                                    color: Colors.blue,
+                                    size: 24,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  tarih,
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      detay.tarih,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      "Devamsızlık",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  "$saat saat",
                                   style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "Devamsızlık",
-                                  style: TextStyle(
                                     fontSize: 14,
-                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              "$saat saat",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue,
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
