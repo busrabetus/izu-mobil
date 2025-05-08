@@ -4,6 +4,7 @@ import '../models/StudentInfo.dart';
 import '../models/course_schedule.dart';
 import 'token_service.dart';
 import 'package:izukbs/models/exam_results.dart';
+import 'package:izukbs/models/transcript.dart';
 //model
 class ApiService {
   final String baseUrl = 'http://10.0.2.2:3000';
@@ -73,4 +74,29 @@ Future<List<ExamResult>> getExamResults(String termId) async {
     throw Exception("Sınav sonuçları alınamadı: ${response.body}");
   }
 }
+
+
+  Future<List<TranscriptCourse>> getTranscript(String termId) async {
+    final token = await AuthService.getToken();
+    if (token == null) {
+      throw Exception("Token bulunamadı.");
+    }
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/transcript?term_id=$termId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((e) => TranscriptCourse.fromJson(e)).toList();
+    } else {
+      throw Exception("Transkript verisi getirilemedi: ${response.body}");
+    }
+  }
+
 }
+
