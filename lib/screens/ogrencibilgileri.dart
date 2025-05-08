@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:izukbs/drawer.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
+import 'package:izukbs/drawer.dart';
+import '../models/StudentInfo.dart';
+import '../services/api_service.dart';
+import 'package:izukbs/models/student_info.dart';
 
 class ogrencibilgileri extends StatefulWidget {
   const ogrencibilgileri({super.key});
@@ -10,384 +13,116 @@ class ogrencibilgileri extends StatefulWidget {
 }
 
 class _ogrencibilgileriState extends State<ogrencibilgileri> {
+  final ApiService apiService = ApiService();
+  late Future<Student_Info> futureStudent;
+
+  @override
+  void initState() {
+    super.initState();
+    futureStudent = apiService.get_StudentInfo();
+  }
+
+  Widget buildRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(width: 160, child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16))),
+          const Text(": ", style: TextStyle(fontSize: 16)),
+          Expanded(child: Text(value, style: const TextStyle(fontSize: 16)))
+        ],
+      ),
+    );
+  }
+
+  Widget buildCard(String title, List<Widget> children) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0, bottom: 5),
+          child: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(4, 4),
+              )
+            ],
+          ),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: children),
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor:  Color(0xFFF0F0F0),
-        appBar: const CustomAppBar(title: "Öğrenci Bilgileri"),
-        drawer: drawer(),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: const Color(0xFFF0F0F0),
+      appBar: const CustomAppBar(title: "Öğrenci Bilgileri"),
+      drawer: drawer(),
+      body: FutureBuilder<Student_Info>(
+        future: futureStudent,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Hata: ${snapshot.error}"));
+          } else if (!snapshot.hasData) {
+            return const Center(child: Text("Veri bulunamadı."));
+          }
 
-        body: Stack(
-            children: [
-              SingleChildScrollView(
-                child :Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 40,
-                    ),
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.grey[300],
-                      child: Icon(Icons.person, size: 80, color: Colors.grey),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "   Öğrenci Bilgileri",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Container(
-                        width: 400,
-                        height: 205,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.black.withOpacity(0.1),
-                              width: 0.01,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: Offset(4, 4),
-                              )
-                            ]
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text("E-posta", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                        SizedBox(width: 100),
-                                        Text(":", style: TextStyle(fontSize: 16)),
-                                        SizedBox(width: 10),
-                                        Text("030722000@std.izu.edu.tr", style: TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Text("TC Kimlik No", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                        SizedBox(width: 60),
-                                        Text(":", style: TextStyle(fontSize: 16)),
-                                        SizedBox(width: 10),
-                                        Text("030722000", style: TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Text("Ad", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                        SizedBox(width: 136),
-                                        Text(":", style: TextStyle(fontSize: 16)),
-                                        SizedBox(width: 10),
-                                        Text("Ayşe", style: TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Text("Soyad", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                        SizedBox(width: 111),
-                                        Text(":", style: TextStyle(fontSize: 16)),
-                                        SizedBox(width: 10),
-                                        Text("Yılmaz", style: TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Text("Öğrenci Numarası", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                        SizedBox(width: 23),
-                                        Text(":", style: TextStyle(fontSize: 16)),
-                                        SizedBox(width: 10),
-                                        Text("030722000", style: TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                    SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        Text("Öğrencilik Statüsü", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                        SizedBox(width: 20),
-                                        Text(":", style: TextStyle(fontSize: 16)),
-                                        SizedBox(width: 10),
-                                        Text("Aktif Öğrenci", style: TextStyle(fontSize: 16)),
-                                      ],
-                                    ),
-                                  ],
-                                )
+          final student = snapshot.data!;
 
-                              ],
-                            )
-                        )
-                    ),
-                    SizedBox(height: 20,),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "   Program Bilgileri",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Container(
-                        width: 400,
-                        height: 230,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.black.withOpacity(0.1),
-                              width: 0.01,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: Offset(4, 4),
-                              )
-                            ]
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text("Fakülte / Enstütü", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 11),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("Mühendislik ve Doğa Bilimleri", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Bölüm / Program", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 11),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("Yazılım Mühendisliği", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Öğretim Türü", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 39),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("Normal Eğitim", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Kayıt Türü", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 61),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("ÖSS", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Burs Türü", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 64),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("ÖSYM - %50 İndirimli", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Sınıf", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 102),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("3.Sınıf", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Kayıt Tarihi", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 53),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("07.09.2021", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                              ],
-                            )
-                        )
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "   Danışman Bilgileri",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Container(
-                        width: 400,
-                        height: 240,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.black.withOpacity(0.1),
-                              width: 0.01,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: Offset(4, 4),
-                              )
-                            ]
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Ad Soyad", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 42),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("Doktor Öğretim Üyesi\nVolkan Çetin", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Ofisi", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 77),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("Halkalı Kampüs -> Nükleer\nAlgılayıcılar ve Robotik\nUygulama ve Araştırma Merkezi\nPG011", style: TextStyle(fontSize: 16),softWrap: true,),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("Ofis Telefonu", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 14),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("02126928990", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("E-posta Adresi", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 4),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("volkan.cetin@izu.edu.tr", style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                              ],
-                            )
-
-                        )
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "   Başarı Sıralaması",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Container(
-                        width: 400,
-                        height: 65,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.black.withOpacity(0.1),
-                              width: 0.01,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: Offset(4, 4),
-                              )
-                            ]
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 5,),
-                                Row(
-                                  children: [
-                                    Text("2024-2025 YY", style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 20),
-                                    Text(":", style: TextStyle(fontSize: 16)),
-                                    SizedBox(width: 10),
-                                    Text("9/67 (%13)", style: TextStyle(fontSize: 16),softWrap: true,),
-                                  ],
-                                ),
-                              ],
-                            )
-
-                        )
-                    ),
-                    SizedBox(height: 50,)
-                  ],
-                ),
-              ),
-            ]
-        )
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
+                const CircleAvatar(radius: 60, child: Icon(Icons.person, size: 80)),
+                const SizedBox(height: 10),
+                buildCard("Öğrenci Bilgileri", [
+                  buildRow("Ad", student.name),
+                  buildRow("Soyad", student.surname),
+                  buildRow("E-posta", student.email),
+                  buildRow("Kullanıcı Adı", student.username),
+                  buildRow("T.C. Kimlik No", student.tc),
+                  buildRow("Kayıt Tarihi", student.registered),
+                ]),
+                buildCard("Program Bilgileri", [
+                  buildRow("Fakülte / Enstitü", student.facName),
+                  buildRow("Bölüm / Program", student.progName),
+                  buildRow("Düzey", student.level),
+                  buildRow("Kayıt Türü", student.regType),
+                  buildRow("Burs Türü", student.sshipType),
+                ]),
+                buildCard("Danışman Bilgileri", [
+                  buildRow("Ad Soyad", student.advisorName),
+                  buildRow("Ofisi", student.office),
+                  buildRow("Telefon", student.advTel),
+                  buildRow("E-posta", student.advEmail),
+                ]),
+                buildCard("Başarı Sıralaması", [
+                  buildRow("Sıralama", student.siralama),
+                  buildRow("AGNO", student.agno.toStringAsFixed(2)),
+                ]),
+                const SizedBox(height: 50),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
