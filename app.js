@@ -39,7 +39,7 @@ app.use("/api/homepage", homePageRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/studentinfo", infoStudentRoutes);
 app.use("/api/attendance", attendanceRoutes);
-app.use("/api/attendancedetail", attendancedetailRoutes);
+app.use("/api/attendance/detail", attendancedetailRoutes);
 app.use("/api/courseSchedule", courseScheduleRoutes);
 app.use("/api/classsesMaterial", classsesMaterialRoutes);
 app.use("/api/examResults", examResultsRoutes);

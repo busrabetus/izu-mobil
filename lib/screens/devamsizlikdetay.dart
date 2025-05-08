@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../services/api_service.dart';
 import '../models/attendance_detail.dart';
+import 'package:intl/intl.dart';
+
 
 class Devamsizlikdetay extends StatefulWidget {
   final String dersAdi;
@@ -53,13 +55,17 @@ class _DevamsizlikdetayState extends State<Devamsizlikdetay> {
                     return const Center(child: Text("Devamsızlık kaydı bulunamadı"));
                   }
 
-                  final detaylar = snapshot.data!;
+                  final detaylar = snapshot.data!
+                      .where((detay) => (detay.toplamSaati - detay.katilimSaati) > 0)
+                      .toList();
                   return ListView.separated(
                     physics: const BouncingScrollPhysics(),
                     itemCount: detaylar.length,
                     separatorBuilder: (context, index) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final detay = detaylar[index];
+                      final DateTime parsedDate = DateTime.parse(detay.tarih);
+                      final String formattedDate = DateFormat('dd.MM.yyyy').format(parsedDate);
                       final int saat = detay.toplamSaati - detay.katilimSaati;
 
                       return Container(
@@ -100,7 +106,7 @@ class _DevamsizlikdetayState extends State<Devamsizlikdetay> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      detay.tarih,
+                                      formattedDate,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,

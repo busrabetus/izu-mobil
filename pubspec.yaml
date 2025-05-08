@@ -37,6 +37,7 @@ dependencies:
   url_launcher: ^6.0.9
   google_fonts: ^4.0.4
   shared_preferences: ^2.2.2
+  intl: ^0.18.0
 
 
 
