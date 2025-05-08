@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
 import 'package:izukbs/term_dropdownbutton.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
+import '../models/exam_schedule.dart';
+import '../services/api_service.dart';
+import 'package:intl/intl.dart';
 
 class sinavtakvimi extends StatefulWidget {
   const sinavtakvimi({super.key});
@@ -11,116 +14,120 @@ class sinavtakvimi extends StatefulWidget {
 }
 
 class _sinavtakvimiState extends State<sinavtakvimi> {
-  late String selectedTerm;
+  final ApiService apiService = ApiService();
+  String selectedTerm = '2024-2025 Bahar';
+  bool isLoading = false;
 
-  final Map<String, List<Map<String, String>>> sinavTakvimi = {
-    "2023-2024 Bahar": [
-      {"ders": "Algoritma Analizi", "sinavturu": "Vize", "tarih": "07.04.2025","saat": "11:30", "derslik": "	Eğitim Bilimleri - EGB01 - Molla Gürânî Konferans Salonu"},
-      {"ders": "Web Tabanlı Programlama", "sinavturu": "Vize","tarih": "08.04.2025","saat": "13:30", "derslik": "Eğitim Bilimleri - EGC16 - Açık Kaynak ve Özgür Yazılım Laboratuvarı"},
-      {"ders": "Grafik Programlama", "sinavturu": "Vize","tarih": "09.04.2025","saat": "09:30", "derslik": "Merkezi Derslikler - MD005"},
-      {"ders": "Diferansiyel Denklemler", "sinavturu": "Vize","tarih": "10.04.2025","saat": "12:00", "derslik": "Merkezi Derslikler - MD008"},
-    ],
-    "2024-2025 Güz": [
-      {"ders": "İşletim Sistemleri", "sinavturu": "Vize","tarih": "07.04.2025","saat": "11:30", "derslik": "Eğitim Bilimleri - EGC16 - Açık Kaynak ve Özgür Yazılım Laboratuvarı"},
-      {"ders": "Linux Sistem Yönetimi", "sinavturu": "Vize","tarih": "08.04.2025","saat": "12:30", "derslik": "	Eğitim Bilimleri - EGB01 - Molla Gürânî Konferans Salonu"},
-      {"ders": "Yazılım Mimarisi", "sinavturu": "Vize","tarih": "09.04.2025", "saat": "09:00","derslik": "Merkezi Derslikler - MD005	"},
-    ],
-    "2024-2025 Bahar": [
-      {"ders": "Sistem Analizi ve Tasarımı", "sinavturu": "Vize", "tarih": "07.04.2025","saat": "11:30", "derslik": "Merkezi Derslikler - MD005	"},
-      {"ders": "Görüntü İşleme", "sinavturu": "Vize","tarih": "08.04.2025","saat": "10:30", "derslik": "Eğitim Bilimleri - EGC16 - Açık Kaynak ve Özgür Yazılım Laboratuvarı"},
-      {"ders": "3D Modelleme ve Animasyon", "sinavturu": "Vize","tarih": "09.04.2025","saat": "14:30", "derslik": "	Eğitim Bilimleri - EGB01 - Molla Gürânî Konferans Salonu"},
-    ],
+  final Map<String, int> termMap = {
+    '2023-2024 Bahar': 9,
+    '2024-2025 Güz': 10,
+    '2024-2025 Bahar': 11,
   };
+
+  List<ExamSchedule> examList = [];
+
+  String formatDate(String rawDate) {
+    final DateTime parsedDate = DateTime.parse(rawDate);
+    return DateFormat('dd.MM.yyyy').format(parsedDate);
+  }
+
+  String formatTime(String rawTime) {
+    final DateTime parsedTime = DateFormat("HH:mm:ss").parse(rawTime);
+    return DateFormat("HH:mm").format(parsedTime);
+  }
 
   @override
   void initState() {
     super.initState();
-    selectedTerm = sinavTakvimi.keys.last;
+    fetchExamSchedule(termMap[selectedTerm]!);
+  }
+
+  Future<void> fetchExamSchedule(int termId) async {
+    setState(() => isLoading = true);
+    try {
+      final exams = await apiService.getExamScheduleList(termId);
+      setState(() {
+        examList = exams;
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Sınav takvimi alınamadı: $e");
+      setState(() => isLoading = false);
+    }
+  }
+
+  Widget buildExamCard(ExamSchedule exam) {
+    return Card(
+      child: ListTile(
+        title: Text(
+          exam.dersAdi,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("📅 ${formatDate(exam.sinavTarihi)}"),
+            Text("🕒 ${formatTime(exam.baslangicSaati)} - ${formatTime(exam.bitisSaati)}"),
+            Text("📍 ${exam.sinavKonumu}"),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final vizeler = examList.where((e) => e.sinavTuru.toLowerCase() == 'vize').toList();
+    final finaller = examList.where((e) => e.sinavTuru.toLowerCase() == 'final').toList();
+
     return Scaffold(
-        backgroundColor:  Color(0xFFF0F0F0),
-        appBar: const CustomAppBar(title: "Sınav Takvimi"),
-        drawer: drawer(),
-        body: Stack(
-            children: [
-
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Dönem Seçiniz",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 8),
-                      TermDropdown(
-                        terms: sinavTakvimi.keys.toList(),
-                        selectedTerm: selectedTerm,
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedTerm = newValue;
-                          });
-                        },
-                      ),
-                      SizedBox(height: 20,),
-                      Text("Sınav Takvimi", style: TextStyle( fontSize: 18, fontWeight: FontWeight.bold),),
-                      Expanded(
-                          child: ListView.builder(
-                            itemCount: sinavTakvimi[selectedTerm]?.length ?? 0,
-                            itemBuilder: (context, index) {
-                              var result = sinavTakvimi[selectedTerm]![index];
-                              return Card(
-                                child: ListTile(
-                                  title: Text(
-                                    result["ders"]!,
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                                  ),
-                                  subtitle: Row(
-                                    children: [
-                                      Text(
-                                        result["sinavturu"]!,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      SizedBox(width: 10,),
-                                      Expanded(
-                                        child: Text(
-                                          result["tarih"]!,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          result["saat"]!,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          result["derslik"]!,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-
-                            },
-                          )
-                      )
-                    ],
-                  )
-              )
-
-
-
-
-            ]
-        )
+      backgroundColor: const Color(0xFFF0F0F0),
+      appBar: const CustomAppBar(title: "Sınav Takvimi"),
+      drawer: drawer(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Dönem Seçiniz", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            TermDropdown(
+              terms: termMap.keys.toList(),
+              selectedTerm: selectedTerm,
+              onChanged: (newTerm) {
+                setState(() {
+                  selectedTerm = newTerm;
+                });
+                fetchExamSchedule(termMap[newTerm]!);
+              },
+            ),
+            const SizedBox(height: 20),
+            const Text("Sınav Takvimi", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            isLoading
+                ? const Expanded(child: Center(child: CircularProgressIndicator()))
+                : Expanded(
+              child: ListView(
+                children: [
+                  if (vizeler.isNotEmpty) ...[
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8.0, bottom: 4),
+                      child: Text("📘 Vizeler", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                    ...vizeler.map(buildExamCard).toList(),
+                  ],
+                  if (finaller.isNotEmpty) ...[
+                    const Padding(
+                      padding: EdgeInsets.only(top: 16.0, bottom: 4),
+                      child: Text("📕 Finaller", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                    ...finaller.map(buildExamCard).toList(),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
