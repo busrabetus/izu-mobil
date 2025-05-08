@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/drawer.dart';
 import 'package:izukbs/term_dropdownbutton.dart';
+import '../models/attendance.dart';
+import '../models/attendance_detail.dart';
+import '../services/api_service.dart';
 import 'devamsizlikdetay.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 
@@ -12,60 +15,21 @@ class DevamsizlikDurumu extends StatefulWidget {
 }
 
 class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
+  final ApiService apiService = ApiService();
+  late Future<List<Attendance>> attendanceFuture;
+
+  final Map<String, int> termMap = {
+    '2024-2025 Güz': 10,
+    '2024-2025 Bahar': 11,
+  };
+
   String selectedTerm = '2024-2025 Bahar';
 
-  final Map<String, List<Map<String, dynamic>>> devamsizlikListesi = {
-    '2024-2025 Bahar': [
-      {
-        'ders': 'Algoritmaya Giriş',
-        'kod': 'BIL101',
-        'devamsizlik': 30.33,
-        'detaylar': {
-          '31/03/2025': 2,
-        }
-      },
-      {
-        'ders': 'Diferansiyel Denklemler',
-        'kod': 'Mat202',
-        'devamsizlik': 100,
-        'detaylar': {
-          '31/03/2025': 2,
-        }
-      },
-      {
-        'ders': 'Yapay Zeka',
-        'kod': 'BIL102',
-        'devamsizlik': 69.88,
-        'detaylar': {
-          '15/03/2025': 1,
-          '22/03/2025': 0,
-          '29/03/2025': 2,
-        }
-      },
-    ],
-    '2024-2025 Güz': [
-      {
-        'ders': 'Programlamaya Giriş',
-        'kod': 'BIL103',
-        'devamsizlik': 76.33,
-        'detaylar': {
-          '15/03/2025': 2,
-          '22/03/2025': 2,
-          '29/03/2025': 0,
-        }
-      },
-      {
-        'ders': 'Üniversiteyi Anlamak',
-        'kod': 'BIL104',
-        'devamsizlik': 65.33,
-        'detaylar': {
-          '15/03/2025': 0,
-          '22/03/2025': 1,
-          '29/03/2025': 1,
-        }
-      },
-    ],
-  };
+  @override
+  void initState() {
+    super.initState();
+    attendanceFuture = apiService.getAttendanceList(termMap[selectedTerm]!);
+  }
 
   final List<Color> _colorPalette = const [
     Color(0xFF8B2231),
@@ -80,16 +44,16 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
     Color(0xFF7B1FA2),
   ];
 
-  Color getCourseColor(String courseCode) {
+  Color getCourseColor(String dersAdi) {
     final numericPart =
-        int.tryParse(courseCode.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+    dersAdi.runes.fold(0, (sum, char) => sum + char); // string -> sayı
     return _colorPalette[numericPart % _colorPalette.length];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8F9FA),
+      backgroundColor: const Color(0xFFF8F9FA),
       appBar: const CustomAppBar(title: "Devamsızlık Durumu"),
       drawer: const drawer(),
       body: Padding(
@@ -104,9 +68,7 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
+                    horizontal: 16.0, vertical: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -120,11 +82,13 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
                     ),
                     const SizedBox(height: 8),
                     TermDropdown(
-                      terms: devamsizlikListesi.keys.toList(),
+                      terms: termMap.keys.toList(),
                       selectedTerm: selectedTerm,
                       onChanged: (newValue) {
                         setState(() {
                           selectedTerm = newValue;
+                          attendanceFuture = apiService.getAttendanceList(
+                              termMap[selectedTerm]!);
                         });
                       },
                     ),
@@ -146,111 +110,138 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
             ),
             const SizedBox(height: 12),
             Expanded(
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemCount: devamsizlikListesi[selectedTerm]!.length,
-                separatorBuilder: (context, index) =>
-                const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  final ders = devamsizlikListesi[selectedTerm]![index];
-                  final percentage = ders['devamsizlik'];
-                  final color = getCourseColor(ders['kod']);
+              child: FutureBuilder<List<Attendance>>(
+                future: attendanceFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("Hata: ${snapshot.error}"));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text("Devamsızlık kaydı bulunamadı"));
+                  }
 
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Devamsizlikdetay(
-                            dersAdi: ders['ders'],
-                            detaylar: ders['detaylar'],
+                  final dersler = snapshot.data!;
+
+                  return ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: dersler.length,
+                    separatorBuilder: (context, index) =>
+                    const SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final ders = dersler[index];
+                      final color = getCourseColor(ders.dersAdi);
+
+                      return InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () async {
+                          final detayList = await apiService.getAttendanceDetail(
+                            className: ders.dersAdi,
+                            termId: termMap[selectedTerm]!,
+                          );
+
+                          final Map<String, int> detayMap = {
+                            for (var d in detayList)
+                              d.tarih: d.toplamSaati - d.katilimSaati
+                          };
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Devamsizlikdetay(
+                                dersAdi: ders.dersAdi,
+                                termId: termMap[selectedTerm]!,
+                              ),
+
+                            ),
+                          );
+
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 6,
+                                spreadRadius: 1,
+                                offset: const Offset(0, 3),
+                              )
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    color: color.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      ders.dersAdi.substring(0, 3).toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: color,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        ders.dersAdi,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      LinearProgressIndicator(
+                                        value: ders.devamsizlikOrani / 100,
+                                        backgroundColor: color.withOpacity(0.2),
+                                        color: color,
+                                        minHeight: 6,
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: color.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Text(
+                                    "${ders.devamsizlikOrani.toStringAsFixed(1)}%",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: color,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 6,
-                            spreadRadius: 1,
-                            offset: Offset(0, 3),
-                          )
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: color.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  ders['kod'],
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: color,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ders['ders'],
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  LinearProgressIndicator(
-                                    value: percentage / 100,
-                                    backgroundColor: color.withValues(alpha: 0.2),
-                                    color: color,
-                                    minHeight: 6,
-                                    borderRadius: BorderRadius.circular(3),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: color.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                "${percentage.toStringAsFixed(1)}%",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: color,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                   );
                 },
               ),

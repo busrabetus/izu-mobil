@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/StudentInfo.dart';
+import '../models/attendance.dart';
+import '../models/attendance_detail.dart';
 import '../models/course_schedule.dart';
 import '../models/exam_results.dart';
 import '../models/transcript.dart';
@@ -144,4 +146,45 @@ class ApiService {
       throw Exception("Öğrenci bilgileri getirilemedi: ${response.body}");
     }
   }
+
+  //devamsizlik sayfasi icin
+  Future<List<Attendance>> getAttendanceList(int termId) async {
+    final token = await AuthService.getToken();
+    if (token == null) throw Exception("Token bulunamadı.");
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/attendance?term_id=$termId'),
+      headers: { 'Authorization': 'Bearer $token' },
+    );
+
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      return data.map((e) => Attendance.fromJson(e)).toList();
+    } else {
+      throw Exception("Devamsızlık verisi alınamadı: ${response.statusCode} - ${response.body}");
+    }
+  }
+
+  Future<List<AttendanceDetail>> getAttendanceDetail({
+    required String className,
+    required int termId,
+  }) async {
+    final token = await AuthService.getToken();
+    if (token == null) throw Exception("Token bulunamadı.");
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/attendance/detail?class_name=$className&term_id=$termId'),
+      headers: { 'Authorization': 'Bearer $token' },
+    );
+
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      return data.map((e) => AttendanceDetail.fromJson(e)).toList();
+    } else if (response.statusCode == 404) {
+      return [];
+    } else {
+      throw Exception("Devamsızlık detayı alınamadı: ${response.statusCode}");
+    }
+  }
+
 }
