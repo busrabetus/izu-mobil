@@ -13,7 +13,7 @@ class sinavsonuclari extends StatefulWidget {
 
 class _sinavsonuclariState extends State<sinavsonuclari> {
   final ApiService apiService = ApiService();
-  String selectedTerm = "10"; // Varsayılan term_id
+  String selectedTerm = "10";
   bool isLoading = false;
 
   List<ExamResult> rawResults = [];

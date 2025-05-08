@@ -5,6 +5,7 @@ import '../models/attendance.dart';
 import '../models/attendance_detail.dart';
 import '../models/course_schedule.dart';
 import '../models/exam_results.dart';
+import '../models/exam_schedule.dart';
 import '../models/transcript.dart';
 import 'token_service.dart';
 import 'package:izukbs/models/student_info.dart';
@@ -165,6 +166,7 @@ class ApiService {
     }
   }
 
+  //devamsizlik detay icin
   Future<List<AttendanceDetail>> getAttendanceDetail({
     required String className,
     required int termId,
@@ -186,5 +188,25 @@ class ApiService {
       throw Exception("Devamsızlık detayı alınamadı: ${response.statusCode}");
     }
   }
+
+  //sinav takvimi icin
+  Future<List<ExamSchedule>> getExamScheduleList(int termId) async {
+    final token = await AuthService.getToken();
+    if (token == null) throw Exception("Token bulunamadı.");
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/examschedule?term_id=$termId'),
+      headers: { 'Authorization': 'Bearer $token' },
+    );
+
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      return data.map((e) => ExamSchedule.fromJson(e)).toList();
+    } else {
+      throw Exception("Sınav takvimi alınamadı: ${response.statusCode} - ${response.body}");
+    }
+  }
+
+
 
 }
