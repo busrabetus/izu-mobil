@@ -103,7 +103,7 @@ class ApiService {
   }
 
   // Transkript
-  Future<List<TranscriptCourse>> getTranscript(String termId) async {
+  Future<List<TranscriptCourse>> getTranscript(int termId) async {
     final token = await AuthService.getToken();
     if (token == null) {
       throw Exception("Token bulunamadı.");
@@ -113,7 +113,7 @@ class ApiService {
       Uri.parse('$baseUrl/api/transcript?term_id=$termId'),
       headers: {
         'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
+
       },
     );
 
