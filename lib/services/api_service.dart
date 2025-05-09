@@ -9,6 +9,7 @@ import '../models/exam_schedule.dart';
 import '../models/transcript.dart';
 import 'token_service.dart';
 import 'package:izukbs/models/student_info.dart';
+import 'package:izukbs/models/class_materials.dart';
 
 class ApiService {
   final String baseUrl = 'http://10.0.2.2:3000';
@@ -142,7 +143,8 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return Student_Info.fromJson(data); // model sınıfının adını burada da kullan
+      return Student_Info.fromJson(
+          data); // model sınıfının adını burada da kullan
     } else {
       throw Exception("Öğrenci bilgileri getirilemedi: ${response.body}");
     }
@@ -155,14 +157,16 @@ class ApiService {
 
     final response = await http.get(
       Uri.parse('$baseUrl/api/attendance?term_id=$termId'),
-      headers: { 'Authorization': 'Bearer $token' },
+      headers: { 'Authorization': 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
       return data.map((e) => Attendance.fromJson(e)).toList();
     } else {
-      throw Exception("Devamsızlık verisi alınamadı: ${response.statusCode} - ${response.body}");
+      throw Exception(
+          "Devamsızlık verisi alınamadı: ${response.statusCode} - ${response
+              .body}");
     }
   }
 
@@ -175,8 +179,9 @@ class ApiService {
     if (token == null) throw Exception("Token bulunamadı.");
 
     final response = await http.get(
-      Uri.parse('$baseUrl/api/attendance/detail?class_name=$className&term_id=$termId'),
-      headers: { 'Authorization': 'Bearer $token' },
+      Uri.parse(
+          '$baseUrl/api/attendance/detail?class_name=$className&term_id=$termId'),
+      headers: { 'Authorization': 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
@@ -196,17 +201,39 @@ class ApiService {
 
     final response = await http.get(
       Uri.parse('$baseUrl/api/examschedule?term_id=$termId'),
-      headers: { 'Authorization': 'Bearer $token' },
+      headers: { 'Authorization': 'Bearer $token'},
     );
 
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
       return data.map((e) => ExamSchedule.fromJson(e)).toList();
     } else {
-      throw Exception("Sınav takvimi alınamadı: ${response.statusCode} - ${response.body}");
+      throw Exception(
+          "Sınav takvimi alınamadı: ${response.statusCode} - ${response.body}");
     }
   }
 
+
+  Future<List<ClassMaterial>> getClassesMaterial(int termId) async {
+    final token = await AuthService.getToken();
+    if (token == null) throw Exception("Token eksik");
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/api/classesmaterial?term_id=$termId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+    print("🔥 CLASSES MATERIAL RAW DATA: ${response.body}");
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((e) => ClassMaterial.fromJson(e)).toList(); // ✅ işte bu
+    } else {
+      throw Exception("Materyaller alınamadı: ${response.body}");
+    }
+  }
 
 
 }
