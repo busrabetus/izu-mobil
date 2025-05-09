@@ -1,4 +1,5 @@
 class Student_Info {
+  final int userId;
   final String name;
   final String surname;
   final String tc;
@@ -18,6 +19,7 @@ class Student_Info {
   final double agno;
 
   Student_Info({
+    required this.userId,
     required this.name,
     required this.surname,
     required this.tc,
@@ -39,6 +41,7 @@ class Student_Info {
 
   factory Student_Info.fromJson(Map<String, dynamic> json) {
     return Student_Info(
+      userId: json['user_id'] ?? 0,
       name: json['name'],
       surname: json['surname'],
       tc: json['tc'],

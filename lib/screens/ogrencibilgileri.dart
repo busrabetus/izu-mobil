@@ -90,7 +90,10 @@ class _ogrencibilgileriState extends State<ogrencibilgileri> {
             child: Column(
               children: [
                 const SizedBox(height: 40),
-                const CircleAvatar(radius: 60, child: Icon(Icons.person, size: 80)),
+                CircleAvatar(
+                  radius: 60,
+                  backgroundImage: AssetImage("assets/images/avatar/${student!.userId}.png"),
+                ),
                 const SizedBox(height: 10),
                 buildCard("Öğrenci Bilgileri", [
                   buildRow("Ad", student.name),

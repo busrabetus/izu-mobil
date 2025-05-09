@@ -10,7 +10,6 @@ import 'package:izukbs/widgets/custom_appbar.dart';
 import '../drawer.dart';
 import 'package:izukbs/models/StudentInfo.dart';
 
-
 class AnaSayfa extends StatefulWidget {
   const AnaSayfa({super.key});
 
@@ -41,7 +40,6 @@ class _AnaSayfaState extends State<AnaSayfa> {
       );
     }
   }
-
 
   final List<Map<String, String>> duyurular = [
     {
@@ -85,10 +83,12 @@ class _AnaSayfaState extends State<AnaSayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Ana Sayfa"),
       drawer: drawer(),
-      body: SingleChildScrollView(
+      body: student == null
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
         child: Column(
           children: [
             Padding(
@@ -104,29 +104,28 @@ class _AnaSayfaState extends State<AnaSayfa> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 45,
-                        backgroundColor: Color(0xFF8B2231),
-                        child: Icon(Icons.person, size: 40, color: Colors.white),
+                        backgroundImage: AssetImage("assets/images/avatar/${student!.userId}.png"),
                       ),
                       const SizedBox(height: 15),
                       Text(
-                        student?.ad.isNotEmpty == true ? student!.ad : "Yükleniyor...",
+                        student!.ad,
                         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        student?.numara.isNotEmpty == true ? student!.numara : "Yükleniyor...",
+                        student!.numara,
                         style: const TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        student?.fakulte.isNotEmpty == true ? student!.fakulte : "Yükleniyor...",
+                        student!.fakulte,
                         style: const TextStyle(fontSize: 15, color: Colors.grey),
                         textAlign: TextAlign.center,
                       ),
                       Text(
-                        student?.bolum.isNotEmpty == true ? student!.bolum : "Yükleniyor...",
+                        student!.bolum,
                         style: const TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                       const Divider(thickness: 1, height: 20),
@@ -134,11 +133,11 @@ class _AnaSayfaState extends State<AnaSayfa> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            student != null ? "${student!.level}. Sınıf" : "Yükleniyor...",
+                            "${student!.level}. Sınıf",
                             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            student?.agno.isNotEmpty == true ? "AGNO: ${student!.agno}" : "Yükleniyor...",
+                            "AGNO: ${student!.agno}",
                             style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ],
@@ -152,16 +151,15 @@ class _AnaSayfaState extends State<AnaSayfa> {
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Align(
+              child: const Align(
                 alignment: Alignment.centerLeft,
-                child: const Text(
+                child: Text(
                   "Hızlı Menü",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             const SizedBox(height: 15),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -192,9 +190,9 @@ class _AnaSayfaState extends State<AnaSayfa> {
             const SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Align(
+              child: const Align(
                 alignment: Alignment.centerLeft,
-                child: const Text(
+                child: Text(
                   "Duyurular",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -262,6 +260,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
+
   Widget _buildDuyuruCard(String baslik, String icerik, String resimUrl) {
     return GestureDetector(
       onTap: () {
@@ -339,5 +338,4 @@ class _AnaSayfaState extends State<AnaSayfa> {
       ),
     );
   }
-
 }
