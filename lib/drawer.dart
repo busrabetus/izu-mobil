@@ -9,6 +9,8 @@ import 'package:izukbs/screens/dersprogrami.dart';
 import 'package:izukbs/screens/devamsizlikdurumu.dart';
 import 'package:izukbs/screens/homepage.dart';
 import 'package:izukbs/screens/ogrencibilgileri.dart';
+import 'package:izukbs/screens/transkriptdetay.dart';
+import 'package:izukbs/services/token_service.dart';
 
 class drawer extends StatefulWidget {
   const drawer({super.key});
@@ -109,6 +111,16 @@ class _drawerState extends State<drawer> {
             },
           ),
           ListTile(
+            leading: Icon(Icons.receipt),
+            title: Text('Transkript (Sanal)'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => transkriptdetay()),
+              );
+            },
+          ),
+          ListTile(
             leading: Icon(Icons.event),
             title: Text('Sınav Takvimi'),
             onTap: () {
@@ -130,15 +142,21 @@ class _drawerState extends State<drawer> {
           ),
 
           ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Çıkış Yap'),
-            onTap: () async { // saidlerin kullandıgı backend teknolojisine göre logout işlemi gerçekleştireceğiz burada
-              Navigator.pushReplacement(
+            leading: const Icon(Icons.logout),
+            title: const Text('Çıkış Yap'),
+            onTap: () async {
+              // Token'ı temizle
+              await AuthService.removeToken();
+
+
+              Navigator.pushAndRemoveUntil( // bunu kullanma sebebimiz geri tuşuna basınca geri gelemesin diye
                 context,
-                MaterialPageRoute(builder: (context) => Login_Page()),
+                MaterialPageRoute(builder: (context) => const Login_Page()),
+                    (Route<dynamic> route) => false,
               );
             },
           ),
+
         ],
       ),
     );

@@ -143,4 +143,3 @@ class _TranskriptPageState extends State<transkript> {
     );
   }
 }
-
