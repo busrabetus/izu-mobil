@@ -52,7 +52,7 @@ class _TranskriptPageState extends State<transkript> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Transkript"),
       drawer: const drawer(),
       body: Padding(
@@ -66,6 +66,7 @@ class _TranskriptPageState extends State<transkript> {
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: DropdownButtonFormField<String>(
+                  dropdownColor: Colors.white,
                   decoration: const InputDecoration(
                     labelText: "Dönem Seçiniz ",
                     border: OutlineInputBorder(),
@@ -117,6 +118,7 @@ class _TranskriptPageState extends State<transkript> {
                         ),
                       ),
                       ...courses.map((course) => Card(
+                        color: Colors.white,
                         margin: const EdgeInsets.symmetric(vertical: 6),
                         child: ListTile(
                           title: Text(course.dersAdi),

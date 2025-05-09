@@ -53,7 +53,7 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Devamsızlık Durumu"),
       drawer: const drawer(),
       body: Padding(

@@ -67,7 +67,7 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
     return Scaffold(
       appBar: const CustomAppBar(title: "Sınav Sonuçları"),
       drawer: drawer(),
-      backgroundColor: const Color(0xFFF0F0F0),
+      backgroundColor: Color(0xFFF5F5F5),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -114,6 +114,7 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
                   List<ExamResult> sinavlar = groupedResults[dersAdi]!;
 
                   return Card(
+                    color: Colors.white,
                     margin: const EdgeInsets.only(bottom: 16),
                     elevation: 2,
                     child: Padding(

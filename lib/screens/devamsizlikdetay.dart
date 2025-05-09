@@ -35,7 +35,7 @@ class _DevamsizlikdetayState extends State<Devamsizlikdetay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: Color(0xFFF5F5F5),
       appBar: CustomAppBar(title: widget.dersAdi),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
