@@ -58,7 +58,7 @@ class _basvuruformlariState extends State<basvuruformlari> {
     ];
 
     return Scaffold(
-      backgroundColor: Color(0xFFF0F0F0),
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Başvuru Formları"),
       drawer: drawer(),
       body: Stack(
@@ -108,6 +108,7 @@ class FormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),

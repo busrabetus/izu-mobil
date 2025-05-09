@@ -58,6 +58,7 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
 
   Widget buildExamCard(ExamSchedule exam) {
     return Card(
+      color: Colors.white,
       child: ListTile(
         title: Text(
           exam.dersAdi,
@@ -81,7 +82,7 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
     final finaller = examList.where((e) => e.sinavTuru.toLowerCase() == 'final').toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F0F0),
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Sınav Takvimi"),
       drawer: drawer(),
       body: Padding(

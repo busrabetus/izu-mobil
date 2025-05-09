@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:izukbs/screens/dersprogrami.dart';
 import 'package:izukbs/screens/devamsizlikdurumu.dart';
 import 'package:izukbs/screens/ogrencibilgileri.dart';
@@ -9,7 +8,6 @@ import 'package:izukbs/screens/transkript.dart';
 import 'package:izukbs/services/api_service.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../drawer.dart';
-import 'package:izukbs/services/token_service.dart';
 import 'package:izukbs/models/StudentInfo.dart';
 
 
@@ -87,6 +85,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Ana Sayfa"),
       drawer: drawer(),
       body: SingleChildScrollView(

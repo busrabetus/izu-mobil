@@ -70,7 +70,7 @@ class _ogrencibilgileriState extends State<ogrencibilgileri> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(0xFFF0F0F0),
+      backgroundColor: Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Öğrenci Bilgileri"),
       drawer: drawer(),
       body: FutureBuilder<Student_Info>(
