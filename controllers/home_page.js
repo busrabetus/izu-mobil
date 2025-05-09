@@ -49,6 +49,11 @@ exports.getHomePage = (req, res) => {
             return res.status(404).json({ message: "Öğrenci bilgileri bulunamadı" });
         }
 
-        res.status(200).json(results[0]);
+        //fotolar icin user_id ekledim
+        res.status(200).json({
+            user_id: user_id,
+            ...results[0]
+        });
     });
+
 };
