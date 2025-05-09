@@ -4,9 +4,6 @@ exports.getTranscript = (req, res) => {
   const user_id = req.user?.user_id;
   const term_id = Number(req.query.term_id);
 
-  console.log("🔍 [TRANSCRIPT API] Kullanıcı ID:", user_id);
-  console.log("🔍 [TRANSCRIPT API] Term ID:", term_id);
-  console.log("🔍 [TRANSCRIPT API] Token Header:", req.headers.authorization);
 
   if (!user_id || !term_id) {
     return res.status(400).json({ message: "Kullanıcı ID veya Term ID eksik" });
@@ -45,7 +42,7 @@ const query = `
       return res.status(404).json({ message: "Veri bulunamadı" });
     }
 
-    console.log("✅ Transkript verisi başarıyla döndürüldü:", results);
+    console.log("✅ Transkript verisi başarıyla döndürüldü:");
     res.status(200).json(results);
   });
 };
