@@ -53,7 +53,7 @@ class _TranskriptPageState extends State<transkriptdetay> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      appBar: const CustomAppBar(title: "🎓 Transkript (Sanal)"),
+      appBar: const CustomAppBar(title: "Transkript (Sanal)"),
       drawer: const drawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
