@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:izukbs/drawer.dart';
+import 'package:izukbs/widgets/drawer.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../models/transcript.dart';
 import '../services/api_service.dart';
+import '../widgets/calculategpa.dart';
+import '../widgets/term_dropdownbutton.dart';
 
 class transkriptdetay extends StatefulWidget {
   const transkriptdetay({super.key});
@@ -28,26 +30,6 @@ class _TranskriptPageState extends State<transkriptdetay> {
     transcriptFuture = apiService.getTranscript(termMap[selectedTerm]!);
   }
 
-  double calculateGPA(List<TranscriptCourse> courses) {
-    double totalPoints = 0;
-    double totalCredits = 0;
-
-    const gradePoints = {
-      'AA': 4.0, 'BA': 3.5, 'BB': 3.0,
-      'CB': 2.5, 'CC': 2.0, 'DC': 1.5,
-      'DD': 1.0, 'FD': 0.5, 'FF': 0.0,
-    };
-
-    for (var course in courses) {
-      final point = gradePoints[course.harfNotu];
-      if (point != null) {
-        totalPoints += point * course.akts;
-        totalCredits += course.akts;
-      }
-    }
-
-    return totalCredits > 0 ? totalPoints / totalCredits : 0.0;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,47 +41,15 @@ class _TranskriptPageState extends State<transkriptdetay> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "📅 Dönem Seçiniz",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    DropdownButton<String>(
-                      value: selectedTerm,
-                      isExpanded: true,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      style: const TextStyle(fontSize: 16, color: Colors.black),
-                      items: termMap.entries.map((entry) {
-                        return DropdownMenuItem<String>(
-                          value: entry.key,
-                          child: Text(entry.key),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        if (newValue != null) {
-                          setState(() {
-                            selectedTerm = newValue;
-                            transcriptFuture = apiService.getTranscript(termMap[selectedTerm]!);
-                          });
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
+            TermDropdown(
+              terms: termMap.keys.toList(),
+              selectedTerm: selectedTerm,
+              onChanged: (newTerm) {
+                setState(() {
+                  selectedTerm = newTerm;
+                  transcriptFuture = apiService.getTranscript(termMap[selectedTerm]!);
+                });
+              },
             ),
 
             const SizedBox(height: 16),
@@ -139,19 +89,12 @@ class _TranskriptPageState extends State<transkriptdetay> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFDAD8D8),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                "AGNO: ${dynamicGpa.toStringAsFixed(2)}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF9E9E9E),
-                                ),
+                            child: Text(
+                              "AGNO: ${dynamicGpa.toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF8B2231),
                               ),
                             ),
                           ),
@@ -169,7 +112,7 @@ class _TranskriptPageState extends State<transkriptdetay> {
                               child: ListTile(
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                 title: Text(
-                                  "📘 ${course.dersAdi}",
+                                  "${course.dersAdi}",
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,

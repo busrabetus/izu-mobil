@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../drawer.dart';
+import '../widgets/drawer.dart';
 import '../widgets/custom_appbar.dart';
 
 class basvuruformlari extends StatefulWidget {

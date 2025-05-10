@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/login_page.dart';
-import 'screens/homepage.dart'; // giriş sonrası yönlendirilecek sayfa
-import 'services/token_service.dart'; // token kontrolü için
+import 'screens/homepage.dart';
+import 'services/token_service.dart';
 
 void main() {
   runApp(const Izukbs());
@@ -18,7 +18,7 @@ class Izukbs extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const InitialPage(), // başlangıç sayfası kontrol edilecek
+      home: const InitialPage(),
     );
   }
 }
@@ -39,9 +39,9 @@ class InitialPage extends StatelessWidget {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         } else {
           if (snapshot.data == true) {
-            return const AnaSayfa(); // giriş yapılmışsa anasayfa
+            return const AnaSayfa();
           } else {
-            return const Login_Page(); // giriş yapılmamışsa login
+            return const Login_Page();
           }
         }
       },

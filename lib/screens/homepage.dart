@@ -7,7 +7,7 @@ import 'package:izukbs/screens/sinavtakvimi.dart';
 import 'package:izukbs/screens/transkript.dart';
 import 'package:izukbs/services/api_service.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
-import '../drawer.dart';
+import '../widgets/drawer.dart';
 import 'package:izukbs/models/StudentInfo.dart';
 
 class AnaSayfa extends StatefulWidget {
@@ -20,6 +20,8 @@ class AnaSayfa extends StatefulWidget {
 class _AnaSayfaState extends State<AnaSayfa> {
   final ApiService _apiService = ApiService();
   StudentInfo? student;
+  bool _loading = true;
+
 
   @override
   void initState() {
@@ -32,14 +34,19 @@ class _AnaSayfaState extends State<AnaSayfa> {
       final studentInfo = await _apiService.getHomepageData();
       setState(() {
         student = studentInfo;
+        _loading = false;
       });
     } catch (e) {
       print('Hata: $e');
+      setState(() {
+        _loading = false; // hata da olsa yükleme bitiyor
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Öğrenci bilgileri alınamadı: $e')),
       );
     }
   }
+
 
   final List<Map<String, String>> duyurular = [
     {
@@ -86,8 +93,10 @@ class _AnaSayfaState extends State<AnaSayfa> {
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Ana Sayfa"),
       drawer: drawer(),
-      body: student == null
+      body:  _loading
           ? const Center(child: CircularProgressIndicator())
+          : student == null
+          ? const Center(child: Text("Öğrenci verisi bulunamadı"))
           : SingleChildScrollView(
         child: Column(
           children: [

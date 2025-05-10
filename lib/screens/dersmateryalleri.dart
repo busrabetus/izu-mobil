@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:izukbs/drawer.dart';
-import 'package:izukbs/term_dropdownbutton.dart';
+import 'package:izukbs/widgets/drawer.dart';
+import 'package:izukbs/widgets/term_dropdownbutton.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../models/class_materials.dart';
 import '../services/api_service.dart';
@@ -70,34 +70,15 @@ class _DersMateryalleriState extends State<DersMateryalleri> {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Dönem Seçiniz",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    TermDropdown(
-                      terms: termMap.keys.toList(),
-                      selectedTerm: selectedTerm,
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedTerm = newValue;
-                          _loadMaterials();
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
+            child: TermDropdown(
+              terms: termMap.keys.toList(),
+              selectedTerm: selectedTerm,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedTerm = newValue;
+                  materialsFuture = apiService.getClassesMaterial(termMap[selectedTerm]!);
+                });
+              },
             ),
           ),
           Expanded(
