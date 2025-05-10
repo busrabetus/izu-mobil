@@ -53,41 +53,55 @@ class _TranskriptPageState extends State<transkriptdetay> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
-      appBar: const CustomAppBar(title: "Transkript (Sanal)"),
+      appBar: const CustomAppBar(title: "🎓 Transkript (Sanal)"),
       drawer: const drawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Card(
-              elevation: 2,
+              elevation: 3,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: DropdownButtonFormField<String>(
-                  dropdownColor: Colors.white,
-                  decoration: const InputDecoration(
-                    labelText: "Dönem Seçiniz ",
-                    border: OutlineInputBorder(),
-                  ),
-                  value: selectedTerm,
-                  items: termMap.keys
-                      .map((term) => DropdownMenuItem(
-                    value: term,
-                    child: Text(term),
-                  ))
-                      .toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedTerm = newValue!;
-                      transcriptFuture =
-                          apiService.getTranscript(termMap[selectedTerm]!);
-                    });
-                  },
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "📅 Dönem Seçiniz",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    DropdownButton<String>(
+                      value: selectedTerm,
+                      isExpanded: true,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      style: const TextStyle(fontSize: 16, color: Colors.black),
+                      items: termMap.entries.map((entry) {
+                        return DropdownMenuItem<String>(
+                          value: entry.key,
+                          child: Text(entry.key),
+                        );
+                      }).toList(),
+                      onChanged: (newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            selectedTerm = newValue;
+                            transcriptFuture = apiService.getTranscript(termMap[selectedTerm]!);
+                          });
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
+
             const SizedBox(height: 16),
             Expanded(
               child: FutureBuilder<List<TranscriptCourse>>(
@@ -99,7 +113,8 @@ class _TranskriptPageState extends State<transkriptdetay> {
                     return Center(child: Text("Hata: ${snapshot.error}"));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(
-                        child: Text("Bu döneme ait transkript bulunamadı."));
+                      child: Text("📭 Bu döneme ait transkript bulunamadı."),
+                    );
                   }
 
                   final courses = snapshot.data!;
@@ -114,8 +129,7 @@ class _TranskriptPageState extends State<transkriptdetay> {
                           return TranscriptCourse(
                             dersAdi: original.dersAdi,
                             akts: original.akts,
-                            harfNotu:
-                            modifiedGrades[index] ?? original.harfNotu,
+                            harfNotu: modifiedGrades[index] ?? original.harfNotu,
                             donemAdi: original.donemAdi,
                           );
                         },
@@ -125,12 +139,19 @@ class _TranskriptPageState extends State<transkriptdetay> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              "AGNO: ${dynamicGpa.toStringAsFixed(2)}",
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF8B2231),
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFDAD8D8),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                "AGNO: ${dynamicGpa.toStringAsFixed(2)}",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF9E9E9E),
+                                ),
                               ),
                             ),
                           ),
@@ -139,25 +160,36 @@ class _TranskriptPageState extends State<transkriptdetay> {
                             final course = entry.value;
 
                             return Card(
+                              margin: const EdgeInsets.symmetric(vertical: 6),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
                               color: Colors.white,
-                              margin:
-                              const EdgeInsets.symmetric(vertical: 6),
                               child: ListTile(
-                                title: Text(course.dersAdi),
-                                subtitle: Text("${course.akts} AKTS"),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                title: Text(
+                                  "📘 ${course.dersAdi}",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  "${course.akts} AKTS",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                                 trailing: DropdownButton<String>(
-                                  value: modifiedGrades[index] ??
-                                      course.harfNotu,
+                                  value: modifiedGrades[index] ?? course.harfNotu,
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  style: const TextStyle(fontSize: 14, color: Colors.black),
+                                  underline: Container(height: 1, color: Colors.grey),
                                   items: const [
-                                    'AA',
-                                    'BA',
-                                    'BB',
-                                    'CB',
-                                    'CC',
-                                    'DC',
-                                    'DD',
-                                    'FD',
-                                    'FF'
+                                    'AA', 'BA', 'BB', 'CB', 'CC',
+                                    'DC', 'DD', 'FD', 'FF'
                                   ].map((grade) {
                                     return DropdownMenuItem(
                                       value: grade,
