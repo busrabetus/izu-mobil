@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:izukbs/drawer.dart';
+import 'package:izukbs/widgets/drawer.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../models/transcript.dart';
 import '../services/api_service.dart';
+import '../widgets/calculategpa.dart';
+import '../widgets/term_dropdownbutton.dart';
 
 class transkript extends StatefulWidget {
   const transkript({super.key});
@@ -28,26 +30,13 @@ class _TranskriptPageState extends State<transkript> {
     transcriptFuture = apiService.getTranscript(termMap[selectedTerm]!);
   }
 
-  double calculateGPA(List<TranscriptCourse> courses) {
-    double totalPoints = 0;
-    double totalCredits = 0;
-
-    const gradePoints = {
-      'AA': 4.0, 'BA': 3.5, 'BB': 3.0,
-      'CB': 2.5, 'CC': 2.0, 'DC': 1.5,
-      'DD': 1.0, 'FD': 0.5, 'FF': 0.0,
-    };
-
-    for (var course in courses) {
-      final point = gradePoints[course.harfNotu];
-      if (point != null) {
-        totalPoints += point * course.akts;
-        totalCredits += course.akts;
-      }
-    }
-
-    return totalCredits > 0 ? totalPoints / totalCredits : 0.0;
+  void updateTranscript(String newTerm) {
+    setState(() {
+      selectedTerm = newTerm;
+      transcriptFuture = apiService.getTranscript(termMap[selectedTerm]!);
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,34 +48,10 @@ class _TranskriptPageState extends State<transkript> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: DropdownButtonFormField<String>(
-                  dropdownColor: Colors.white,
-                  decoration: const InputDecoration(
-                    labelText: "Dönem Seçiniz ",
-                    border: OutlineInputBorder(),
-                  ),
-                  value: selectedTerm,
-                  items: termMap.keys
-                      .map((term) => DropdownMenuItem(
-                    value: term,
-                    child: Text(term),
-                  ))
-                      .toList(),
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedTerm = newValue!;
-                      transcriptFuture =
-                          apiService.getTranscript(termMap[selectedTerm]!);
-                    });
-                  },
-                ),
-              ),
+            TermDropdown(
+              terms: termMap.keys.toList(),
+              selectedTerm: selectedTerm,
+              onChanged: updateTranscript,
             ),
             const SizedBox(height: 16),
             Expanded(

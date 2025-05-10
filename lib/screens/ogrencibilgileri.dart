@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
-import 'package:izukbs/drawer.dart';
-import '../models/StudentInfo.dart';
+import 'package:izukbs/widgets/drawer.dart';
 import '../services/api_service.dart';
 import 'package:izukbs/models/student_info.dart';
+import 'package:intl/intl.dart';
 
 class ogrencibilgileri extends StatefulWidget {
   const ogrencibilgileri({super.key});
@@ -101,7 +101,10 @@ class _ogrencibilgileriState extends State<ogrencibilgileri> {
                   buildRow("E-posta", student.email),
                   buildRow("Kullanıcı Adı", student.username),
                   buildRow("T.C. Kimlik No", student.tc),
-                  buildRow("Kayıt Tarihi", student.registered),
+                  buildRow(
+                    "Kayıt Tarihi",
+                    DateFormat('dd/MM/yyyy').format(DateTime.parse(student.registered)),
+                  ),
                 ]),
                 buildCard("Program Bilgileri", [
                   buildRow("Fakülte / Enstitü", student.facName),

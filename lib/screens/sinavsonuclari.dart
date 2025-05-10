@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:izukbs/drawer.dart';
+import 'package:izukbs/widgets/drawer.dart';
 import '../widgets/custom_appbar.dart';
 import '../services/api_service.dart';
 import '../models/exam_results.dart';
+import '../widgets/term_dropdownbutton.dart';
 
 class sinavsonuclari extends StatefulWidget {
   const sinavsonuclari({super.key});
@@ -29,6 +30,12 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
     super.initState();
     fetchExamResults();
   }
+
+  String capitalize(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
 
   Future<void> fetchExamResults() async {
     setState(() {
@@ -72,35 +79,20 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "📅 Dönem Seçiniz",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 8),
-            DropdownButton<String>(
-              value: selectedTerm,
-              isExpanded: true,
-              icon: const Icon(Icons.arrow_drop_down),
-              style: const TextStyle(fontSize: 16, color: Colors.black),
-              items: termMap.entries.map((entry) {
-                return DropdownMenuItem<String>(
-                  value: entry.value,
-                  child: Text(entry.key),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                if (newValue != null) {
-                  setState(() {
-                    selectedTerm = newValue;
-                  });
-                  fetchExamResults();
-                }
+            TermDropdown(
+              terms: termMap.keys.toList(),
+              selectedTerm: termMap.entries.firstWhere((e) => e.value == selectedTerm).key,
+              onChanged: (newKey) {
+                setState(() {
+                  selectedTerm = termMap[newKey]!; // String -> int dönüşüm
+                });
+                fetchExamResults();
               },
             ),
             const SizedBox(height: 20),
             const Text(
               "📚 Ders Listesi",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
             ),
             const SizedBox(height: 8),
             Expanded(
@@ -132,7 +124,7 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
                       title: Text(
                         "📖 $dersAdi",
                         style: const TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
                         ),
@@ -151,18 +143,19 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
                               const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 4),
                               title: Text(
-                                "📝 ${sinav.sinavTuru}",
+                                "${capitalize(sinav.sinavTuru)}",
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
+
                               trailing: Text(
                                 "🎯 ${sinav.puan} | %${sinav.yuzdelik}",
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.green,
+                                  color: Colors.black,
                                 ),
                               ),
                             ),

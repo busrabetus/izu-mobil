@@ -32,12 +32,14 @@ Future<void> login(String username, String password, BuildContext context) async
         throw Exception('Token sunucudan alınamadı.');
       }
     } else {
-      throw Exception('Giriş başarısız');
+      final errorData = json.decode(response.body);
+      final message = errorData['message'] ?? 'Giriş başarısız';
+      throw Exception(message);
     }
   } catch (e) {
     print("Hata: $e");
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Giriş hatası: $e")),
+      SnackBar(content: Text(e.toString().replaceAll('Exception: ', ''))),
     );
   }
 }
@@ -112,7 +114,7 @@ class _Login_pageState extends State<Login_Page> {
                       TextField(
                         controller: usernamecontroller,
                         decoration: InputDecoration(
-                            labelText: "kullaniciadi@std.izu.edu.tr",
+                            labelText: "kullaniciadi@gmail.com",
                             filled: true,
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
