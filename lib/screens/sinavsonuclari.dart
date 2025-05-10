@@ -67,20 +67,22 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
     return Scaffold(
       appBar: const CustomAppBar(title: "Sınav Sonuçları"),
       drawer: drawer(),
-      backgroundColor: Color(0xFFF5F5F5),
+      backgroundColor: const Color(0xFFF5F5F5),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Dönem Seçiniz",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              "📅 Dönem Seçiniz",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
             DropdownButton<String>(
               value: selectedTerm,
               isExpanded: true,
+              icon: const Icon(Icons.arrow_drop_down),
+              style: const TextStyle(fontSize: 16, color: Colors.black),
               items: termMap.entries.map((entry) {
                 return DropdownMenuItem<String>(
                   value: entry.value,
@@ -98,51 +100,76 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
             ),
             const SizedBox(height: 20),
             const Text(
-              "Sınav Sonuçları:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              "📚 Ders Listesi",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Expanded(
               child: isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : groupedResults.isEmpty
-                  ? const Center(child: Text("Sonuç bulunamadı."))
+                  ? const Center(
+                child: Text(
+                  "🧐 Sonuç bulunamadı.",
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
                   : ListView.builder(
                 itemCount: groupedResults.length,
                 itemBuilder: (context, index) {
-                  String dersAdi = groupedResults.keys.elementAt(index);
-                  List<ExamResult> sinavlar = groupedResults[dersAdi]!;
+                  String dersAdi =
+                  groupedResults.keys.elementAt(index);
+                  List<ExamResult> sinavlar =
+                  groupedResults[dersAdi]!;
 
                   return Card(
                     color: Colors.white,
                     margin: const EdgeInsets.only(bottom: 16),
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            dersAdi,
-                            style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 8),
-                          ...sinavlar.map((sinav) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Sınav: ${sinav.sinavTuru}"),
-                                  Text("Puan: ${sinav.puan}  |  %${sinav.yuzdelik}"),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                        ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 3,
+                    child: ExpansionTile(
+                      title: Text(
+                        "📖 $dersAdi",
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black87,
+                        ),
                       ),
+                      children: sinavlar.map((sinav) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color(0xFFF0F0F0),
+                            ),
+                            child: ListTile(
+                              contentPadding:
+                              const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 4),
+                              title: Text(
+                                "📝 ${sinav.sinavTuru}",
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              trailing: Text(
+                                "🎯 ${sinav.puan} | %${sinav.yuzdelik}",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   );
                 },
