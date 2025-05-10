@@ -42,7 +42,6 @@ const query = `
       return res.status(404).json({ message: "Veri bulunamadı" });
     }
 
-    console.log("✅ Transkript verisi başarıyla döndürüldü:");
     res.status(200).json(results);
   });
 };

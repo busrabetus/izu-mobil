@@ -20,7 +20,6 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
   Map<String, List<ExamResult>> groupedResults = {};
 
   final Map<String, String> termMap = {
-    "2023-2024 Bahar": "8",
     "2024-2025 Güz": "10",
     "2024-2025 Bahar": "11",
   };

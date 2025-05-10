@@ -4,7 +4,6 @@ exports.getClassesMaterial = (req, res) => {
   const user_id = req.user?.user_id;
   const term_id = Number(req.query.term_id);
 
-  console.log("📥 [CLASSES MATERIAL] user_id:", user_id, "term_id:", term_id);
 
   if (!user_id || !term_id) {
     return res.status(400).json({ message: "Kullanıcı ID veya Term ID eksik" });
@@ -41,8 +40,6 @@ db.query(query, [user_id, term_id], (err, results) => {
       console.warn("⚠️ Transkript verisi bulunamadı.");
       return res.status(404).json({ message: "Veri bulunamadı" });
     }
-
-    console.log("✅ Transkript verisi başarıyla döndürüldü:", results);
     res.status(200).json(results);
   });
 };
