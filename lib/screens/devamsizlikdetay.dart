@@ -3,6 +3,8 @@ import 'package:izukbs/widgets/custom_appbar.dart';
 import '../services/api_service.dart';
 import '../models/attendance_detail.dart';
 import 'package:intl/intl.dart';
+import 'package:izukbs/utils/chechtoken.dart';
+
 
 class Devamsizlikdetay extends StatefulWidget {
   final String dersAdi;
@@ -25,9 +27,11 @@ class _DevamsizlikdetayState extends State<Devamsizlikdetay> {
   @override
   void initState() {
     super.initState();
+    checkTokenAndRedirect(context);
     detailFuture = apiService.getAttendanceDetail(
       className: widget.dersAdi,
       termId: widget.termId,
+
     );
   }
 

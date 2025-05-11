@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:izukbs/utils/chechtoken.dart';
+
 
 class TermDropdown extends StatelessWidget {
   final List<String> terms;
@@ -38,7 +40,7 @@ class TermDropdown extends StatelessWidget {
             border: Border.all(color: Colors.grey.shade300),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withAlpha((255 * 0.1).round()),
                 blurRadius: 6,
                 offset: const Offset(0, 2),
               )
@@ -57,12 +59,14 @@ class TermDropdown extends StatelessWidget {
                   child: Text(term),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
+              onChanged: (String? newValue) async {
+                await checkTokenAndRedirect(context);
                 if (newValue != null) {
                   onChanged(newValue);
                 }
               },
             ),
+
           ),
         ),
       ],

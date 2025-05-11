@@ -127,7 +127,7 @@ class ApiService {
     }
   }
 
-  Future<Student_Info> get_StudentInfo() async {
+  Future<StuInfo> getStuInfo() async {
     final token = await AuthService.getToken();
     if (token == null) {
       throw Exception("Token bulunamadı.");
@@ -143,7 +143,7 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return Student_Info.fromJson(
+      return StuInfo.fromJson(
           data); // model sınıfının adını burada da kullan
     } else {
       throw Exception("Öğrenci bilgileri getirilemedi: ${response.body}");
@@ -225,7 +225,6 @@ class ApiService {
         'Content-Type': 'application/json',
       },
     );
-    print("🔥 CLASSES MATERIAL RAW DATA: ${response.body}");
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);

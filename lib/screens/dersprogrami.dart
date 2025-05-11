@@ -4,6 +4,8 @@ import 'package:izukbs/widgets/term_dropdownbutton.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../models/course_schedule.dart';
 import '../services/api_service.dart';
+import 'package:izukbs/utils/chechtoken.dart';
+
 
 class DersProgrami extends StatefulWidget {
   const DersProgrami({super.key});
@@ -46,6 +48,8 @@ class _DersProgramiState extends State<DersProgrami> {
   void initState() {
     super.initState();
     _fetchProgram(termMap[selectedTerm]!);
+    checkTokenAndRedirect(context);
+
   }
 
   void _fetchProgram(int termId) async {
@@ -78,7 +82,7 @@ class _DersProgramiState extends State<DersProgrami> {
     return Scaffold(
       backgroundColor: Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Ders Programı"),
-      drawer: drawer(),
+      drawer: AppDrawer(),
       body: Stack(
         children: [
           Positioned(

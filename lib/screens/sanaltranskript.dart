@@ -3,17 +3,19 @@ import 'package:izukbs/widgets/drawer.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../models/transcript.dart';
 import '../services/api_service.dart';
-import '../widgets/calculategpa.dart';
+import '../utils/calculategpa.dart';
 import '../widgets/term_dropdownbutton.dart';
+import 'package:izukbs/utils/chechtoken.dart';
 
-class transkriptdetay extends StatefulWidget {
-  const transkriptdetay({super.key});
+
+class SanalTranskript extends StatefulWidget {
+  const SanalTranskript({super.key});
 
   @override
-  State<transkriptdetay> createState() => _TranskriptPageState();
+  State<SanalTranskript> createState() => _TranskriptPageState();
 }
 
-class _TranskriptPageState extends State<transkriptdetay> {
+class _TranskriptPageState extends State<SanalTranskript> {
   final ApiService apiService = ApiService();
 
   final Map<String, int> termMap = {
@@ -28,6 +30,8 @@ class _TranskriptPageState extends State<transkriptdetay> {
   void initState() {
     super.initState();
     transcriptFuture = apiService.getTranscript(termMap[selectedTerm]!);
+    checkTokenAndRedirect(context);
+
   }
 
 
@@ -36,7 +40,7 @@ class _TranskriptPageState extends State<transkriptdetay> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Transkript (Sanal)"),
-      drawer: const drawer(),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -112,7 +116,7 @@ class _TranskriptPageState extends State<transkriptdetay> {
                               child: ListTile(
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                 title: Text(
-                                  "${course.dersAdi}",
+                                  course.dersAdi,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,

@@ -9,6 +9,8 @@ import 'package:izukbs/services/api_service.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../widgets/drawer.dart';
 import 'package:izukbs/models/StudentInfo.dart';
+import 'package:izukbs/utils/chechtoken.dart';
+
 
 class AnaSayfa extends StatefulWidget {
   const AnaSayfa({super.key});
@@ -27,17 +29,20 @@ class _AnaSayfaState extends State<AnaSayfa> {
   void initState() {
     super.initState();
     _fetchOgrenciBilgileri();
+    checkTokenAndRedirect(context);
+
   }
 
   Future<void> _fetchOgrenciBilgileri() async {
     try {
       final studentInfo = await _apiService.getHomepageData();
+      if (!mounted) return;
       setState(() {
         student = studentInfo;
         _loading = false;
       });
     } catch (e) {
-      print('Hata: $e');
+      if (!mounted) return;
       setState(() {
         _loading = false; // hata da olsa yükleme bitiyor
       });
@@ -92,7 +97,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Ana Sayfa"),
-      drawer: drawer(),
+      drawer: AppDrawer(),
       body:  _loading
           ? const Center(child: CircularProgressIndicator())
           : student == null
@@ -175,21 +180,21 @@ class _AnaSayfaState extends State<AnaSayfa> {
                 children: [
                   Row(
                     children: [
-                      _buildMenuButton(Icons.person, "Öğrenci\nBilgileri", context, ogrencibilgileri()),
+                      _buildMenuButton(Icons.person, "Öğrenci\nBilgileri", context, OgrenciBilgileri()),
                       const SizedBox(width: 10),
                       _buildMenuButton(Icons.calendar_today, "Ders\nProgramı", context, DersProgrami()),
                       const SizedBox(width: 10),
-                      _buildMenuButton(Icons.assignment, "Sınav\nSonuçları", context, sinavsonuclari()),
+                      _buildMenuButton(Icons.assignment, "Sınav\nSonuçları", context, SinavSonuclari()),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      _buildMenuButton(Icons.note, "Transkript\nBelgesi", context, transkript()),
+                      _buildMenuButton(Icons.note, "Transkript\nBelgesi", context, Transkript()),
                       const SizedBox(width: 10),
                       _buildMenuButton(Icons.auto_graph, "Devamsızlık\nDurumu", context, DevamsizlikDurumu()),
                       const SizedBox(width: 10),
-                      _buildMenuButton(Icons.calendar_month, "Sınav\nTakvimi", context, sinavtakvimi()),
+                      _buildMenuButton(Icons.calendar_month, "Sınav\nTakvimi", context, SinavTakvimi()),
                     ],
                   ),
                 ],
@@ -244,7 +249,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withAlpha((255 * 0.1).round()),
                 blurRadius: 6,
                 offset: const Offset(0, 3),
               ),
@@ -297,7 +302,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withAlpha((255 * 0.1).round()),
               blurRadius: 6,
               offset: const Offset(0, 3),
             ),

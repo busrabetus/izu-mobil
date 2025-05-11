@@ -9,17 +9,17 @@ import 'package:izukbs/screens/dersprogrami.dart';
 import 'package:izukbs/screens/devamsizlikdurumu.dart';
 import 'package:izukbs/screens/homepage.dart';
 import 'package:izukbs/screens/ogrencibilgileri.dart';
-import 'package:izukbs/screens/transkriptdetay.dart';
+import 'package:izukbs/screens/sanaltranskript.dart';
 import 'package:izukbs/services/token_service.dart';
 
-class drawer extends StatefulWidget {
-  const drawer({super.key});
+class AppDrawer extends StatefulWidget {
+  const AppDrawer({super.key});
 
   @override
-  State<drawer> createState() => _drawerState();
+  State<AppDrawer> createState() => _AppDrawerState();
 }
 
-class _drawerState extends State<drawer> {
+class _AppDrawerState extends State<AppDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -56,7 +56,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ogrencibilgileri()),
+                MaterialPageRoute(builder: (context) => OgrenciBilgileri()),
               );
             },
           ),
@@ -96,7 +96,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => sinavsonuclari()),
+                MaterialPageRoute(builder: (context) => SinavSonuclari()),
               );
             },
           ),
@@ -106,7 +106,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => transkript()),
+                MaterialPageRoute(builder: (context) => Transkript()),
               );
             },
           ),
@@ -116,7 +116,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => transkriptdetay()),
+                MaterialPageRoute(builder: (context) => SanalTranskript()),
               );
             },
           ),
@@ -126,7 +126,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => sinavtakvimi()),
+                MaterialPageRoute(builder: (context) => SinavTakvimi()),
               );
             },
           ),
@@ -136,7 +136,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => basvuruformlari()),
+                MaterialPageRoute(builder: (context) => BasvuruFormlari()),
               );
             },
           ),
@@ -145,13 +145,12 @@ class _drawerState extends State<drawer> {
             leading: const Icon(Icons.logout),
             title: const Text('Çıkış Yap'),
             onTap: () async {
-              // Token'ı temizle
               await AuthService.removeToken();
 
 
               Navigator.pushAndRemoveUntil( // bunu kullanma sebebimiz geri tuşuna basınca geri gelemesin diye
                 context,
-                MaterialPageRoute(builder: (context) => const Login_Page()),
+                MaterialPageRoute(builder: (context) => const LoginPage()),
                     (Route<dynamic> route) => false,
               );
             },

@@ -5,6 +5,8 @@ import 'package:izukbs/widgets/custom_appbar.dart';
 import '../models/class_materials.dart';
 import '../services/api_service.dart';
 import 'ders_detay.dart';
+import 'package:izukbs/utils/chechtoken.dart';
+
 
 class DersMateryalleri extends StatefulWidget {
   const DersMateryalleri({super.key});
@@ -46,6 +48,8 @@ class _DersMateryalleriState extends State<DersMateryalleri> {
   void initState() {
     super.initState();
     _loadMaterials();
+    checkTokenAndRedirect(context);
+
   }
 
   void _loadMaterials() {
@@ -65,7 +69,7 @@ class _DersMateryalleriState extends State<DersMateryalleri> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Ders Materyalleri"),
-      drawer: const drawer(),
+      drawer: const AppDrawer(),
       body: Column(
         children: [
           Padding(
@@ -142,7 +146,7 @@ class _DersMateryalleriState extends State<DersMateryalleri> {
                                   width: 60,
                                   height: 60,
                                   decoration: BoxDecoration(
-                                    color: dersRengi.withOpacity(0.1),
+                                    color: dersRengi.withAlpha((255 * 0.1).round()),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Center(
