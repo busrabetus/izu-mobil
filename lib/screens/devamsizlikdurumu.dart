@@ -6,6 +6,8 @@ import '../models/attendance_detail.dart';
 import '../services/api_service.dart';
 import 'devamsizlikdetay.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
+import 'package:izukbs/utils/chechtoken.dart';
+
 
 class DevamsizlikDurumu extends StatefulWidget {
   const DevamsizlikDurumu({super.key});
@@ -29,6 +31,8 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
   void initState() {
     super.initState();
     attendanceFuture = apiService.getAttendanceList(termMap[selectedTerm]!);
+    checkTokenAndRedirect(context);
+
   }
 
   final List<Color> _colorPalette = const [
@@ -55,7 +59,7 @@ class _DevamsizlikDurumuState extends State<DevamsizlikDurumu> {
     return Scaffold(
       backgroundColor: Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Devamsızlık Durumu"),
-      drawer: const drawer(),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import '../widgets/drawer.dart';
 import '../widgets/custom_appbar.dart';
 
-class basvuruformlari extends StatefulWidget {
-  const basvuruformlari({super.key});
+class BasvuruFormlari extends StatefulWidget {
+  const BasvuruFormlari({super.key});
 
   @override
-  State<basvuruformlari> createState() => _basvuruformlariState();
+  State<BasvuruFormlari> createState() => _BasvuruFormlariState();
+
 }
 
-class _basvuruformlariState extends State<basvuruformlari> {
+class _BasvuruFormlariState extends State<BasvuruFormlari> {
   @override
   Widget build(BuildContext context) {
     List<Map<String, String>> formList = [
@@ -60,7 +61,7 @@ class _basvuruformlariState extends State<basvuruformlari> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Başvuru Formları"),
-      drawer: drawer(),
+      drawer: AppDrawer(),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -126,14 +127,14 @@ class FormCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Divider(
-              color: Colors.black.withOpacity(0.4),
+              color: Colors.black.withAlpha((255 * 0.4).round()),
               thickness: 1,
               indent: 20,
               endIndent: 20,
             ),
             Text(description,textAlign: TextAlign.center,),
             Divider(
-              color: Colors.black.withOpacity(0.4),
+              color: Colors.black.withAlpha((255 * 0.4).round()),
               thickness: 1,
               indent: 20,
               endIndent: 20,
@@ -183,7 +184,7 @@ class FormCard extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF8B2231).withOpacity(0.3),
+                  backgroundColor: const Color(0xFF8B2231).withAlpha((255 * 0.3).round()),
                   foregroundColor: Colors.white,
                 ),
                 child: Text("Başvur"),

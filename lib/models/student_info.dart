@@ -1,4 +1,4 @@
-class Student_Info {
+class StuInfo {
   final int userId;
   final String name;
   final String surname;
@@ -18,7 +18,7 @@ class Student_Info {
   final String siralama;
   final double agno;
 
-  Student_Info({
+  StuInfo({
     required this.userId,
     required this.name,
     required this.surname,
@@ -39,8 +39,8 @@ class Student_Info {
     required this.agno,
   });
 
-  factory Student_Info.fromJson(Map<String, dynamic> json) {
-    return Student_Info(
+  factory StuInfo.fromJson(Map<String, dynamic> json) {
+    return StuInfo(
       userId: json['user_id'] ?? 0,
       name: json['name'],
       surname: json['surname'],

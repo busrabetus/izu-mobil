@@ -20,8 +20,6 @@ Future<void> login(String username, String password, BuildContext context) async
       var data = json.decode(response.body);
       final token = data['token'];
 
-      print("TOKEN: $token");
-
       if (token != null) {
         await AuthService.saveToken(token);
         Navigator.pushReplacement(
@@ -37,21 +35,20 @@ Future<void> login(String username, String password, BuildContext context) async
       throw Exception(message);
     }
   } catch (e) {
-    print("Hata: $e");
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(e.toString().replaceAll('Exception: ', ''))),
     );
   }
 }
 
-class Login_Page extends StatefulWidget {
-  const Login_Page({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<Login_Page> createState() => _Login_pageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _Login_pageState extends State<Login_Page> {
+class _LoginPageState extends State<LoginPage> {
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
 
@@ -67,7 +64,7 @@ class _Login_pageState extends State<Login_Page> {
               width: 175,
               height: 175,
               decoration: BoxDecoration(
-                color: Color(0xFF8B2231).withOpacity(0.7),
+                color: const Color(0xFF8B2231).withAlpha((255 * 0.7).round()),
                 shape: BoxShape.circle,
               ),
             ),
@@ -79,7 +76,7 @@ class _Login_pageState extends State<Login_Page> {
               width: 175,
               height: 175,
               decoration: BoxDecoration(
-                color: Color(0xFF8B2231).withOpacity(0.7),
+                color: const Color(0xFF8B2231).withAlpha((255 * 0.7).round()),
                 shape: BoxShape.circle,
               ),
             ),

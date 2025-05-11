@@ -4,15 +4,17 @@ import '../widgets/custom_appbar.dart';
 import '../services/api_service.dart';
 import '../models/exam_results.dart';
 import '../widgets/term_dropdownbutton.dart';
+import 'package:izukbs/utils/chechtoken.dart';
 
-class sinavsonuclari extends StatefulWidget {
-  const sinavsonuclari({super.key});
+
+class SinavSonuclari extends StatefulWidget {
+  const SinavSonuclari({super.key});
 
   @override
-  State<sinavsonuclari> createState() => _sinavsonuclariState();
+  State<SinavSonuclari> createState() => _SinavSonuclariState();
 }
 
-class _sinavsonuclariState extends State<sinavsonuclari> {
+class _SinavSonuclariState extends State<SinavSonuclari> {
   final ApiService apiService = ApiService();
   String selectedTerm = "10";
   bool isLoading = false;
@@ -29,6 +31,8 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
   void initState() {
     super.initState();
     fetchExamResults();
+    checkTokenAndRedirect(context);
+
   }
 
   String capitalize(String text) {
@@ -46,7 +50,6 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
       rawResults = await apiService.getExamResults(selectedTerm);
       groupResultsByCourse();
     } catch (e) {
-      print("Hata: $e");
       rawResults = [];
       groupedResults = {};
     } finally {
@@ -72,7 +75,7 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: "Sınav Sonuçları"),
-      drawer: drawer(),
+      drawer: AppDrawer(),
       backgroundColor: const Color(0xFFF5F5F5),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -143,7 +146,7 @@ class _sinavsonuclariState extends State<sinavsonuclari> {
                               const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 4),
                               title: Text(
-                                "${capitalize(sinav.sinavTuru)}",
+                                capitalize(sinav.sinavTuru),
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,

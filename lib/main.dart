@@ -8,7 +8,7 @@ void main() {
 }
 
 class Izukbs extends StatelessWidget {
-  const Izukbs({Key? key}) : super(key: key);
+  const Izukbs({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class InitialPage extends StatelessWidget {
           if (snapshot.data == true) {
             return const AnaSayfa();
           } else {
-            return const Login_Page();
+            return const LoginPage();
           }
         }
       },

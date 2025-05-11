@@ -7,7 +7,6 @@ const db = require("../config/db");
 
 // 📌 Kullanıcı Girişi (Login)
 
-
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
@@ -32,7 +31,7 @@ exports.login = (req, res) => {
             const token = jwt.sign(
                 { user_id: user.user_id, username: user.username },
                 process.env.JWT_SECRET,
-                { expiresIn: "1h" }
+                { expiresIn: "2m" }
             );
 
             res.status(200).json({

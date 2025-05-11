@@ -4,22 +4,26 @@ import 'package:izukbs/widgets/drawer.dart';
 import '../services/api_service.dart';
 import 'package:izukbs/models/student_info.dart';
 import 'package:intl/intl.dart';
+import 'package:izukbs/utils/chechtoken.dart';
 
-class ogrencibilgileri extends StatefulWidget {
-  const ogrencibilgileri({super.key});
+
+class OgrenciBilgileri extends StatefulWidget {
+  const OgrenciBilgileri({super.key});
 
   @override
-  State<ogrencibilgileri> createState() => _ogrencibilgileriState();
+  State<OgrenciBilgileri> createState() => _OgrenciBilgileriState();
 }
 
-class _ogrencibilgileriState extends State<ogrencibilgileri> {
+class _OgrenciBilgileriState extends State<OgrenciBilgileri> {
   final ApiService apiService = ApiService();
-  late Future<Student_Info> futureStudent;
+  late Future<StuInfo> futureStudent;
 
   @override
   void initState() {
     super.initState();
-    futureStudent = apiService.get_StudentInfo();
+    futureStudent = apiService.getStuInfo();
+    checkTokenAndRedirect(context);
+
   }
 
   Widget buildRow(String label, String value) {
@@ -53,7 +57,7 @@ class _ogrencibilgileriState extends State<ogrencibilgileri> {
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withAlpha((255 * 0.1).round()),
                 blurRadius: 10,
                 offset: const Offset(4, 4),
               )
@@ -72,8 +76,8 @@ class _ogrencibilgileriState extends State<ogrencibilgileri> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Öğrenci Bilgileri"),
-      drawer: drawer(),
-      body: FutureBuilder<Student_Info>(
+      drawer: AppDrawer(),
+      body: FutureBuilder<StuInfo>(
         future: futureStudent,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

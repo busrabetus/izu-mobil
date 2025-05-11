@@ -3,17 +3,18 @@ import 'package:izukbs/widgets/drawer.dart';
 import 'package:izukbs/widgets/custom_appbar.dart';
 import '../models/transcript.dart';
 import '../services/api_service.dart';
-import '../widgets/calculategpa.dart';
+import '../utils/calculategpa.dart';
 import '../widgets/term_dropdownbutton.dart';
+import 'package:izukbs/utils/chechtoken.dart';
 
-class transkript extends StatefulWidget {
-  const transkript({super.key});
+class Transkript extends StatefulWidget {
+  const Transkript({super.key});
 
   @override
-  State<transkript> createState() => _TranskriptPageState();
+  State<Transkript> createState() => _TranskriptPageState();
 }
 
-class _TranskriptPageState extends State<transkript> {
+class _TranskriptPageState extends State<Transkript> {
   final ApiService apiService = ApiService();
 
   final Map<String, int> termMap = {
@@ -28,6 +29,7 @@ class _TranskriptPageState extends State<transkript> {
   void initState() {
     super.initState();
     transcriptFuture = apiService.getTranscript(termMap[selectedTerm]!);
+    checkTokenAndRedirect(context);
   }
 
   void updateTranscript(String newTerm) {
@@ -43,7 +45,7 @@ class _TranskriptPageState extends State<transkript> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Transkript"),
-      drawer: const drawer(),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -5,15 +5,17 @@ import 'package:izukbs/widgets/custom_appbar.dart';
 import '../models/exam_schedule.dart';
 import '../services/api_service.dart';
 import 'package:intl/intl.dart';
+import 'package:izukbs/utils/chechtoken.dart';
 
-class sinavtakvimi extends StatefulWidget {
-  const sinavtakvimi({super.key});
+
+class SinavTakvimi extends StatefulWidget {
+  const SinavTakvimi({super.key});
 
   @override
-  State<sinavtakvimi> createState() => _sinavtakvimiState();
+  State<SinavTakvimi> createState() => _SinavTakvimiState();
 }
 
-class _sinavtakvimiState extends State<sinavtakvimi> {
+class _SinavTakvimiState extends State<SinavTakvimi> {
   final ApiService apiService = ApiService();
   String selectedTerm = '2024-2025 Bahar';
   bool isLoading = false;
@@ -39,6 +41,8 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
   void initState() {
     super.initState();
     fetchExamSchedule(termMap[selectedTerm]!);
+    checkTokenAndRedirect(context);
+
   }
 
   Future<void> fetchExamSchedule(int termId) async {
@@ -83,7 +87,7 @@ class _sinavtakvimiState extends State<sinavtakvimi> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: const CustomAppBar(title: "Sınav Takvimi"),
-      drawer: drawer(),
+      drawer: AppDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),

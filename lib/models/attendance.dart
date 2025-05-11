@@ -2,6 +2,7 @@ class Attendance {
   final String dersAdi;
   final double devamsizlikOrani;
 
+
   Attendance({required this.dersAdi, required this.devamsizlikOrani});
 
   factory Attendance.fromJson(Map<String, dynamic> json) {
